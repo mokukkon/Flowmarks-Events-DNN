@@ -1,0 +1,178 @@
+<dotnetnuke type="Package" version="5.0">
+    <packages>
+        <package name="Flowmarks Events" type="Module" version="01.00.00">
+            <friendlyName>Flowmarks Events</friendlyName>
+            <description>Data entry tool for simple time series.</description>
+            <owner>
+                <name>Mika Kukkonen</name>
+                <organization></organization>
+                <url><![CDATA[<a href="http://www.flowmarks.com" target="_new">www.flowmarks.com</a>]]></url>
+                <email><![CDATA[flowmarks@gmail.com, twitter: <a href="http://www.twitter.com/kukkonen" target="_new">kukkonen</a>]]></email>
+            </owner>
+            <license>
+                &lt;p&gt;
+
+                Copyright (c) 2011 Mika Kukkonen (http://www.flowmarks.com)&lt;br/&gt;
+                Copyright Contact: flowmarks@gmail.com&lt;br/&gt;
+
+                &lt;/p&gt;
+                &lt;p&gt;
+                Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated
+                documentation files (the &quot;Software&quot;), to deal in the Software without restriction, including without limitation
+                the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and
+                to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+                &lt;/p&gt;
+                &lt;p&gt;
+                The above copyright notice and this permission notice shall be included in all copies or substantial portions
+                of the Software.
+                &lt;/p&gt;
+                &lt;p&gt;
+                THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED
+                TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL
+                THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF
+                CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+                DEALINGS IN THE SOFTWARE.
+                &lt;/p&gt;
+            </license>
+
+            <releaseNotes >
+                <![CDATA[
+	    <p style="font-weight:bolder">Version 1.00 - Released March 2011</p>
+	    <ul>
+	        <li>2011.03 : First release</li>
+	      </ul>
+          ]]>
+
+            </releaseNotes>
+            <components>
+                <component type="Script">
+                    <scripts>
+                        <basePath>DesktopModules\flowmarks_Events</basePath>
+                        <script type="Install">
+                            <name>01.00.00.SqlDataProvider</name>
+                            <version>01.00.00</version>
+                        </script>
+                        <script type="Uninstall">
+                            <name>Uninstall.SqlDataProvider</name>
+                        </script>
+                    </scripts>
+                </component>
+                <component type="Module">
+                    <desktopModule>
+                        <moduleName>Flowmarks Events</moduleName>
+                        <foldername>flowmarks_Events</foldername>
+                        <businessControllerClass />
+                        <supportedFeatures />
+                        <moduleDefinitions>
+                            <moduleDefinition>
+                                <friendlyName>Flowmarks Events</friendlyName>
+                                <defaultCacheTime>0</defaultCacheTime>
+                                <moduleControls>
+                                    <moduleControl>
+                                        <controlKey>UserSettings</controlKey>
+                                        <controlSrc>DesktopModules/flowmarks_Events/UserSettings.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle>Settings</controlTitle>
+                                        <controlType>View</controlType>
+                                        <iconFile />
+                                        <helpUrl />
+                                    </moduleControl>
+                                    <moduleControl>
+                                        <controlKey>Settings</controlKey>
+                                        <controlSrc>DesktopModules/flowmarks_Events/Settings.ascx</controlSrc>
+                                        <supportsPartialRendering>False</supportsPartialRendering>
+                                        <controlTitle>Flowmarks Events Settings</controlTitle>
+                                        <controlType>Edit</controlType>
+                                        <iconFile />
+                                        <helpUrl />
+                                    </moduleControl>                                    
+                                    <moduleControl>
+                                        <controlKey />
+                                        <controlSrc>DesktopModules/flowmarks_Events/ViewEvents.ascx</controlSrc>
+                                        <supportspartialrendering>true</supportspartialrendering>
+                                        <controlTitle>Flowmarks Events</controlTitle>
+                                        <controlType>View</controlType>
+                                        <iconFile />
+                                        <helpUrl />
+                                    </moduleControl>
+                                </moduleControls>
+                            </moduleDefinition>
+                        </moduleDefinitions>
+                    </desktopModule>
+                </component>
+                <component type="Assembly">
+                    <assemblies>
+                        <assembly>
+                            <path>bin</path>
+                            <name>flowmarks.Modules.Events.dll</name>
+                            <sourceFileName>flowmarks.Modules.Events.dll</sourceFileName>
+                        </assembly> 
+                        <assembly>
+                            <path>bin</path>
+                            <name>DevExpress.Data.v9.3.dll</name>
+                            <sourceFileName>DevExpress.Data.v9.3.dll</sourceFileName>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>DevExpress.Utils.v9.3.dll</name>
+                            <sourceFileName>DevExpress.Utils.v9.3.dll</sourceFileName>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>DevExpress.Web.v9.3.dll</name>
+                            <sourceFileName>DevExpress.Web.v9.3.dll</sourceFileName>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>DevExpress.Web.ASPxGridView.v9.3.dll</name>
+                            <sourceFileName>DevExpress.Web.ASPxGridView.v9.3.dll</sourceFileName>
+                        </assembly>
+                        <assembly>
+                            <path>bin</path>
+                            <name>DevExpress.Web.ASPxEditors.v9.3.dll</name>
+                            <sourceFileName>DevExpress.Web.ASPxEditors.v9.3.dll</sourceFileName>
+                        </assembly>
+                    </assemblies>
+                </component>
+                <component type="File">
+                    <files>
+                        <basePath></basePath>
+                        <file>
+                            <name>flowmarks_Events.xml</name>
+                        </file>
+                    </files>
+                </component>
+                <component type="ResourceFile">
+                    <resourceFiles>
+                        <basePath>DesktopModules\flowmarks_Events</basePath>
+                        <resourceFile>
+                            <name>resources.zip</name>
+                        </resourceFile>
+                    </resourceFiles>
+                </component>
+                <component type="Config">
+                    <config>
+                        <configFile>web.config</configFile>
+                        <install>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.webServer/modules" action="update" key="name" collision="overwrite">
+                                      <add type="DevExpress.Web.ASPxClasses.ASPxHttpHandlerModule, DevExpress.Web.v9.3, Version=9.3.3.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" name="ASPxHttpHandlerModule"/>
+                                    </node>
+                                </nodes>
+                            </configuration>
+                        </install>
+                        <uninstall>
+                            <configuration>
+                                <nodes>
+                                    <node path="/configuration/system.webServer/modules/add[@name='ASPxHttpHandlerModule']"
+                                    action="remove" />
+                                </nodes>
+                            </configuration>
+                        </uninstall>
+                    </config>
+                </component>
+            </components>
+        </package>
+    </packages>
+</dotnetnuke>

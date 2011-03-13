@@ -1,0 +1,6 @@
+C:\inetpub\wwwroot\DotNetNuke\Bin\flowmarks.Modules.Events.dll
+C:\inetpub\wwwroot\DotNetNuke\Bin\flowmarks.Modules.Events.pdb
+C:\inetpub\wwwroot\DotNetNuke\DesktopModules\flowmarks_Events\obj\Debug\ResolveAssemblyReference.cache
+C:\inetpub\wwwroot\DotNetNuke\DesktopModules\flowmarks_Events\obj\Debug\flowmarks.Modules.Events.dll.licenses
+C:\inetpub\wwwroot\DotNetNuke\DesktopModules\flowmarks_Events\obj\Debug\flowmarks.Modules.Events.dll
+C:\inetpub\wwwroot\DotNetNuke\DesktopModules\flowmarks_Events\obj\Debug\flowmarks.Modules.Events.pdb
