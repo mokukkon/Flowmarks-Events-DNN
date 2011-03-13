@@ -49,7 +49,7 @@ INSERT INTO [flowmarks_Category]
            ,[IsDeleted])
      VALUES
            (-1
-      ,-1
+      ,0
       ,NULL
       ,'No Category'
       ,NULL
@@ -213,7 +213,7 @@ select e.[EventID]
       ,e.[DateModified]
       ,e.[IsDeleted]
 from {objectQualifier}flowmarks_Event e 
-INNER JOIN {objectQualifier}flowmarks_Category c ON (e.CategoryID = c.CategoryID AND (e.UserID = c.UserID OR c.UserID = -1))
+INNER JOIN {objectQualifier}flowmarks_Category c ON (e.CategoryID = c.CategoryID AND (e.UserID = c.UserID OR c.UserID = 0))
 WHERE e.UserID = @UserId
 and (@CategoryId IS NULL OR e.CategoryID = @CategoryId or c.ParentID = @CategoryId)
 AND e.IsDeleted = 0
@@ -404,7 +404,7 @@ SELECT [CategoryID]
       ,[Label_Comments]
 from {objectQualifier}flowmarks_Category
 WHERE  (ParentId = @ParentId OR NULLIF(@ParentId,-1) IS NULL)
-and (UserID = @UserId OR UserId = -1)
+and (UserID = @UserId OR UserId = 0)
 	AND IsDeleted = 0
 	AND (IsHidden = @IsHidden OR @IsHidden IS NULL)
 ORDER BY UserId, Name	
@@ -438,7 +438,7 @@ SELECT [CategoryID]
       ,[Label_Comments]
 from {objectQualifier}flowmarks_Category
 WHERE  (CategoryId = @CategoryId)
-and (UserID = @UserId OR UserId = -1)
+and (UserID = @UserId OR UserId = 0)
 ORDER BY UserId, [Name]	
 
 GO

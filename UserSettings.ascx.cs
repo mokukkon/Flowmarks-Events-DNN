@@ -45,7 +45,9 @@ namespace flowmarks.Modules.Events
     public partial class UserSettings : PortalModuleBase
     {
         public DotNetNuke.Services.Log.EventLog.EventLogController EventLog = new DotNetNuke.Services.Log.EventLog.EventLogController();
+        private const int NoCategoryId = -1;
         private const int AnonymousUserId = -1;
+        private const int EveryUserId = 0;
 
         #region "Properties"
 
@@ -113,7 +115,7 @@ namespace flowmarks.Modules.Events
                 List<CategoryInfo> categories;
 
                 //get the content from the Event table
-                categories = objCategories.GetCategories(UserId, -1, null);
+                categories = objCategories.GetCategories(UserId, NoCategoryId, null);
                 gvCategorySettings.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);
                 gvCategorySettings.DataBind();
 
@@ -181,7 +183,7 @@ namespace flowmarks.Modules.Events
                 objCategories.UpdateCategory(category);
 
                 List<CategoryInfo> categories;
-                categories = objCategories.GetCategories(UserId, -1, null);
+                categories = objCategories.GetCategories(UserId, NoCategoryId, null);
                 ASPxGridView gv = (ASPxGridView)sender;
                 gv.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);
                 gv.DataBind();
@@ -207,7 +209,7 @@ namespace flowmarks.Modules.Events
                     CategoryController objCategories = new CategoryController();
                     int categoryId = (int)e.Keys["CategoryId"];
 
-                    if (categoryId == -1)
+                    if (categoryId == NoCategoryId)
                     {
                         e.Cancel = true;
                         ShowError("No Category can't be deleted.");
@@ -220,7 +222,7 @@ namespace flowmarks.Modules.Events
                     }
 
                     List<CategoryInfo> categories;
-                    categories = objCategories.GetCategories(UserId, -1, null);
+                    categories = objCategories.GetCategories(UserId, NoCategoryId, null);
                     ASPxGridView gv = (ASPxGridView)sender;
 
                     gv.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);
@@ -255,7 +257,7 @@ namespace flowmarks.Modules.Events
                 objCategories.AddCategory(category);
 
                 List<CategoryInfo> categories;
-                categories = objCategories.GetCategories(UserId, -1, null);
+                categories = objCategories.GetCategories(UserId, NoCategoryId, null);
                 ASPxGridView gv = (ASPxGridView)sender;
 
                 gv.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);

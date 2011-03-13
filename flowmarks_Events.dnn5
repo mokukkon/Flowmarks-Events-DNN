@@ -37,9 +37,9 @@
 
             <releaseNotes >
                 <![CDATA[
-	    <p style="font-weight:bolder">Version 1.00 - Released March 2011</p>
+	    <p style="font-weight:bolder">Version 01.00.00 - Released March 2011</p>
 	    <ul>
-	        <li>2011.03 : First release</li>
+	        <li>2011.03.13 : First release</li>
 	      </ul>
           ]]>
 
@@ -134,6 +134,7 @@
                         </assembly>
                     </assemblies>
                 </component>
+                <!--
                 <component type="File">
                     <files>
                         <basePath></basePath>
@@ -142,6 +143,7 @@
                         </file>
                     </files>
                 </component>
+                -->
                 <component type="ResourceFile">
                     <resourceFiles>
                         <basePath>DesktopModules\flowmarks_Events</basePath>

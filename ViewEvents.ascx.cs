@@ -52,6 +52,7 @@ namespace flowmarks.Modules.Events
     {
         private const int NoCategoryId = -1;
         private const int AnonymousUserId = -1;
+        private const int EveryUserId = 0;
 
         protected global::DotNetNuke.UI.UserControls.SectionHeadControl dshSignEntry;
         protected PortalSecurity pSecurity;
@@ -397,7 +398,7 @@ namespace flowmarks.Modules.Events
                     List<CategoryInfo> categories;
 
                     //get the content from the Event table
-                    categories = objCategories.GetCategories(UserId, -1, false);
+                    categories = objCategories.GetCategories(UserId, NoCategoryId, false);
 
                     ddlRootCategory.DataSourceID = null;
                     ddlCategory.DataSourceID = null;

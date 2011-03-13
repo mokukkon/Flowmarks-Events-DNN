@@ -145,7 +145,7 @@
     </div>
 </div>
 <asp:SqlDataSource ID="dsRootCategories" runat="server" DataSourceMode="DataReader"
-    ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT NULLIF(CategoryID, -1) AS CategoryID, Name FROM flowmarks_Category WHERE ParentID IS NULL AND (NULLIF(UserID, -1) IS NULL OR UserID = @UserID)">
+    ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT NULLIF(CategoryID, -1) AS CategoryID, Name FROM flowmarks_Category WHERE ParentID IS NULL AND (NULLIF(UserID, 0) IS NULL OR UserID = @UserID)">
     <SelectParameters>
         <asp:Parameter Name="UserID" Type="Int32" />
     </SelectParameters>

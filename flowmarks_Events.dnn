@@ -48,10 +48,11 @@
                 <file>
                     <name>Uninstall.SqlDataProvider</name>
                 </file>
+                <!--
                 <file>
                     <name>flowmarks_Events.xml</name>
                 </file>
-                <!--
+                
                 <file>
                     <name>ViewEvents.ascx</name>
                 </file>

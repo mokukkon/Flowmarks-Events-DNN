@@ -684,27 +684,27 @@
         <asp:Label ID="litNoRecordsMessage" runat="server" ></asp:Label>
     </asp:Panel>
     <asp:SqlDataSource ID="dsRootCategories" runat="server" DataSourceMode="DataReader"
-        ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT -1 AS CategoryID, 'All Categories' AS Name UNION SELECT c.CategoryID, c.Name FROM flowmarks_Category c WHERE c.ParentID IS NULL AND (NULLIF(c.UserID, -1) IS NULL OR c.UserID = @UserID) AND EXISTS (SELECT 1 FROM flowmarks_Category c2 WHERE c2.ParentID = c.CategoryID) AND c.IsDeleted = 0 AND c.IsHidden = 0">
+        ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT -1 AS CategoryID, 'All Categories' AS Name UNION SELECT c.CategoryID, c.Name FROM flowmarks_Category c WHERE c.ParentID IS NULL AND (NULLIF(c.UserID, 0) IS NULL OR c.UserID = @UserID) AND EXISTS (SELECT 1 FROM flowmarks_Category c2 WHERE c2.ParentID = c.CategoryID) AND c.IsDeleted = 0 AND c.IsHidden = 0">
         <SelectParameters>
             <asp:Parameter Name="UserID" Type="Int32" />
         </SelectParameters>
     </asp:SqlDataSource>
     <asp:SqlDataSource ID="dsCategories" runat="server" DataSourceMode="DataReader" ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>"
-        SelectCommand="SELECT CategoryID, Name FROM flowmarks_Category WHERE (NULLIF(@ParentID, -1) IS NULL OR ParentID = @ParentID) AND (NULLIF(UserID, -1) IS NULL OR UserID = @UserID) ">
+        SelectCommand="SELECT CategoryID, Name FROM flowmarks_Category WHERE (NULLIF(@ParentID, -1) IS NULL OR ParentID = @ParentID) AND (NULLIF(UserID, 0) IS NULL OR UserID = @UserID) ">
         <SelectParameters>
             <asp:Parameter Name="ParentID" Type="Int32" DefaultValue="-1" />
             <asp:Parameter Name="UserID" Type="Int32" />
         </SelectParameters>
     </asp:SqlDataSource>
     <asp:SqlDataSource ID="dsActiveCategories" runat="server" DataSourceMode="DataReader"
-        ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT CategoryID, Name FROM flowmarks_Category WHERE (NULLIF(@ParentID, -1) IS NULL OR ParentID = @ParentID) AND (NULLIF(UserID, -1) IS NULL OR UserID = @UserID) AND IsDeleted = 0 AND IsHidden = 0 ">
+        ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT CategoryID, Name FROM flowmarks_Category WHERE (NULLIF(@ParentID, -1) IS NULL OR ParentID = @ParentID) AND (NULLIF(UserID, 0) IS NULL OR UserID = @UserID) AND IsDeleted = 0 AND IsHidden = 0 ">
         <SelectParameters>
             <asp:Parameter Name="ParentID" Type="Int32" DefaultValue="-1" />
             <asp:Parameter Name="UserID" Type="Int32" />
         </SelectParameters>
     </asp:SqlDataSource>
     <asp:SqlDataSource ID="dsFilterCategories" runat="server" DataSourceMode="DataReader"
-        ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT NULL AS CategoryID, 'All Categories' As Name UNION SELECT CategoryID, Name FROM flowmarks_Category WHERE ParentID IS NULL AND (NULLIF(UserID, -1) IS NULL OR UserID = @UserID) AND IsDeleted = 0 AND IsHidden = 0 ">
+        ConnectionString="<%$ ConnectionStrings:SiteSqlServer %>" SelectCommand="SELECT NULL AS CategoryID, 'All Categories' As Name UNION SELECT CategoryID, Name FROM flowmarks_Category WHERE ParentID IS NULL AND (NULLIF(UserID, 0) IS NULL OR UserID = @UserID) AND IsDeleted = 0 AND IsHidden = 0 ">
         <SelectParameters>
             <asp:Parameter Name="ParentID" Type="Int32" DefaultValue="-1" />
             <asp:Parameter Name="UserID" Type="Int32" />
