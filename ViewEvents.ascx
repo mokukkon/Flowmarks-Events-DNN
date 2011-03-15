@@ -226,7 +226,7 @@
             </td>
         </tr>
     </table>
-    <asp:LinkButton ID="add" class="addArea" runat="server" ToolTip="New event" OnClick="cmdAdd_Click"></asp:LinkButton>
+    <asp:LinkButton ID="add" class="addArea" runat="server" ToolTip="New Event" OnClick="cmdAdd_Click"></asp:LinkButton>
     <div class="event old">
         <asp:ListView ID="lstContent" datakeyfield="EventId" runat="server" Style="width: 100%;"
             OnItemDataBound="lstContent_ItemDataBound" OnItemCommand="lstContent_ItemCommand"
@@ -305,8 +305,7 @@
                                     </asp:Label>
                                 </td>
                                 <td class="tdField">
-                                    <asp:TextBox ID="dateEventDate" CssClass="dateEventDate fmTextBox" runat="server"
-                                        Text='<% # ConvertToLocalTime(Eval("EventDate")).ToString(DateTimeFormat)%>' />
+                                    <asp:TextBox ID="dateEventDate" CssClass="dateEventDate fmTextBox" runat="server"/>
                                     <div id="cmdEventDate2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
                                         <a href="#2ndDate" title="Another date...">+</a>
                                     </div>
@@ -320,8 +319,7 @@
                                     </asp:Label>
                                 </td>
                                 <td class="tdField">
-                                    <asp:TextBox ID="dateEventDate2" CssClass="dateEventDate2 fmTextBox" runat="server"
-                                        Text='<% # Eval("EventDate2") != null ? ConvertToLocalTime(Eval("EventDate2")).ToString(DateTimeFormat) : "" %>' />
+                                    <asp:TextBox ID="dateEventDate2" CssClass="dateEventDate2 fmTextBox" runat="server" />
                                     <div id="cmdHideEventDate2" class="ui-state-default ui-state-active ui-corner-all fmImageButton">
                                         <div class="ui-icon ui-icon-circle-minus">
                                             <a href="#hide" title="Hide">-</a>
@@ -335,8 +333,7 @@
                                     </asp:Label>
                                 </td>
                                 <td class="tdField">
-                                    <asp:TextBox ID="txtLabel" runat="server" CssClass="fmTextBox" MaxLength="200" Width="300px"
-                                        Text='<% #Bind("Label")%>' />
+                                    <asp:TextBox ID="txtLabel" runat="server" CssClass="fmTextBox" MaxLength="200" Width="300px" />
                                     <div id="cmdLabel2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
                                         <a href="#2ndLabel" title="Another label...">+</a>
                                     </div>
@@ -349,7 +346,7 @@
                                 </td>
                                 <td class="tdField">
                                     <asp:TextBox ID="txtLabel2" CssClass="txtLabel2 fmTextBox" runat="server"
-                                        MaxLength="200" Width="300px" Text='<% #Bind("Label2")%>'></asp:TextBox>
+                                        MaxLength="200" Width="300px"></asp:TextBox>
                                     <div id="cmdHideLabel2" class="ui-state-default ui-state-active ui-corner-all fmImageButton">
                                         <div class="ui-icon ui-icon-circle-minus">
                                             <a href="#hide" title="Hide">-</a>
@@ -364,7 +361,7 @@
                                 </td>
                                 <td class="tdField">
                                     <asp:TextBox ID="txtMeasurement" runat="server" CssClass="fmTextBox" MaxLength="255"
-                                        Placeholder="Number, e.g. 47" Text='<% #Bind("Measurement")%>'></asp:TextBox>
+                                        Placeholder="Number, e.g. 47"></asp:TextBox>
                                     <div id="cmdMeasurement2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
                                         <a href="#2ndMeasurement" title="Another measurement...">+</a>
                                     </div>
@@ -380,7 +377,7 @@
                                 </td>
                                 <td class="tdField">
                                     <asp:TextBox ID="txtMeasurement2" CssClass="txtMeasurement2 fmTextBox"
-                                        runat="server" MaxLength="255" Text='<% #Bind("Measurement2")%>'></asp:TextBox>
+                                        runat="server" MaxLength="255"></asp:TextBox>
                                     <div id="cmdHideMeasurement2" class="ui-state-default ui-state-active ui-corner-all fmImageButton">
                                         <div class="ui-icon ui-icon-circle-minus">
                                             <a href="#hide" title="Hide">-</a>
@@ -397,7 +394,7 @@
                                 </td>
                                 <td class="tdField">
                                     <asp:TextBox ID="txtComments" runat="server" CssClass="fmTextBox" Height="100px"
-                                        Width="300px" TextMode="multiline" Text='<% #Bind("Comments")%>'></asp:TextBox>
+                                        Width="300px" TextMode="multiline"></asp:TextBox>
                                 </td>
                             </tr>
                             <tr id="trEventId" runat="server" class="trEventId">
@@ -406,13 +403,12 @@
                                     </asp:Label>
                                 </td>
                                 <td class="tdField">
-                                    <asp:Label ID="lblEventIdValue" runat="server" Text='<% #Eval("EventId")%>'></asp:Label>
+                                    <asp:Label ID="lblEventIdValue" runat="server"></asp:Label>
                                     <div id="cmdExternalId" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
                                         <a href="#2ndIdentifier" title="Another ID...">+</a>
                                     </div>
                                     <div style="float: right; font-size: 11px; font-style: italic; margin-right: 50px;">
-                                        <asp:Label ID="lblDateLastModified" runat="server" ToolTip='<% #GetLastDate(Eval("DateCreated"),Eval("DateModified")).ToString(DateTimeFormat) %>'
-                                            Text='<% # "edited " + formatTimeSpan(GetLastDate(Eval("DateCreated"),Eval("DateModified"))) + " ago"%>'>
+                                        <asp:Label ID="lblDateLastModified" runat="server">
                                         </asp:Label>
                                     </div>
                                 </td>
@@ -424,7 +420,7 @@
                                 </td>
                                 <td class="tdField">
                                     <asp:TextBox ID="txtExternalId" CssClass="txtExternalId fmTextBox" runat="server"
-                                        MaxLength="50" Text='<% #Bind("ExternalId")%>'></asp:TextBox>
+                                        MaxLength="50"></asp:TextBox>
                                     <div id="cmdHideExternalId" class="ui-state-default ui-state-active ui-corner-all fmImageButton">
                                         <div class="ui-icon ui-icon-circle-minus">
                                             <a href="#hide" title="Hide">-</a>
@@ -439,8 +435,7 @@
                             <tr>
                                 <td colspan="2">
                                     <div class="buttonwrapper">
-                                        <asp:LinkButton ID="UpdateButton" runat="server" CommandArgument='<%# Bind("EventID")%>'
-                                            CommandName="Insert" CssClass="ovalbutton"><span>Save</span></asp:LinkButton>
+                                        <asp:LinkButton ID="UpdateButton" runat="server" CommandName="Insert" CssClass="ovalbutton"><span>Save</span></asp:LinkButton>
                                         <span class="buttonseparator" />
                                         <asp:LinkButton ID="CancelButton" runat="server" CommandName="Cancel" CssClass="ovalbutton"><span>Cancel</span></asp:LinkButton>
                                     </div>
@@ -667,7 +662,7 @@
                             <td>
                                 <%= Localization.GetString("EmptyItemBlock", LocalResourceFile)%>
                                 <span class="small">
-                                    <asp:LinkButton ID="cmdAdd" runat="server" CommandName="Add" Text="Add Event" OnClick="cmdAdd_Click"></asp:LinkButton>
+                                    <asp:LinkButton ID="cmdAdd" runat="server" CommandName="Add" Text="New Event" OnClick="cmdAdd_Click"></asp:LinkButton>
                                 </span>
                             </td>
                         </tr>

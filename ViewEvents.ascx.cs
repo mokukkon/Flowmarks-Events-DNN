@@ -948,10 +948,10 @@ namespace flowmarks.Modules.Events
                     sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_EventDate, "lblEventDate").PadRight(labelwidth), oInfo.EventDate.ToLocalTime().ToString(DateTimeFormat));
 
                     sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_Category, "lblCategory").PadRight(labelwidth), oInfo.Category);
-                                
+
                     if (!string.IsNullOrEmpty(oInfo.Label2))
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_Label2, "lblLabel2").PadRight(labelwidth), oInfo.Label2);
-                                
+
                     if (oInfo.EventDate2 != null)
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_EventDate2, "lblEventDate2").PadRight(labelwidth), oInfo.EventDate2.Value.ToLocalTime().ToString(DateTimeFormat));
 

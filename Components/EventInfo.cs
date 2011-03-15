@@ -21,6 +21,7 @@
 using System;
 using System.Configuration;
 using System.Data;
+using DotNetNuke.Entities.Modules;
 
 namespace flowmarks.Modules.Events.Components
 {
@@ -36,7 +37,7 @@ namespace flowmarks.Modules.Events.Components
     /// Version 1.0     September 5, 2010    Inital Creation of properties
     /// </history>
     /// -----------------------------------------------------------------------------
-    public class EventInfo
+    public class EventInfo : DotNetNuke.Entities.Modules.IHydratable
     {
 
         #region Constructors
@@ -66,11 +67,24 @@ namespace flowmarks.Modules.Events.Components
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets and sets the category of the event
+        /// Gets and sets the categoryid of the event
         /// </summary>
         public int CategoryId { get; set; }
 
+        /// <summary>
+        /// Gets and sets the category of the event
+        /// </summary>
         public string Category { get; set; }
+
+        /// <summary>
+        /// Gets and sets the date and time of the event
+        /// </summary>
+        public DateTime EventDate { get; set; }
+
+        /// <summary>
+        /// Gets and sets the second date and time of the event
+        /// </summary>
+        public DateTime? EventDate2 { get; set; }
 
         /// <summary>
         /// Gets and sets the Label of the event
@@ -78,20 +92,14 @@ namespace flowmarks.Modules.Events.Components
         public string Label { get; set; }
 
         /// <summary>
-        /// Gets and sets the date and time of the event
+        /// Gets and sets the optional text field related to the event
         /// </summary>
-        public DateTime EventDate { get; set; }
-        public DateTime? EventDate2 { get; set; }
+        public string Label2 { get; set; }
 
         /// <summary>
         /// Gets and sets the measurement related to the event
         /// </summary>
         public double? Measurement { get; set; }
-
-        /// <summary>
-        /// Gets and sets the optional text field related to the event
-        /// </summary>
-        public string Label2 { get; set; }
 
         /// <summary>
         /// Gets and sets the optional measurement field related to the event
@@ -125,15 +133,69 @@ namespace flowmarks.Modules.Events.Components
 
         public string Label_Category { get; set; }
         public string Label_Label { get; set; }
+        public string Label_Label2 { get; set; }
         public string Label_EventDate { get; set; }
         public string Label_EventDate2 { get; set; }
         public string Label_Measurement { get; set; }
         public string Label_Measurement2 { get; set; }
-        public string Label_Label2 { get; set; }
         public string Label_ExternalId { get; set; }
-        public string Label_Comments { get; set; }  
+        public string Label_Comments { get; set; }
 
         #endregion
+        #region IHydratable Implementation
+        public int KeyID
+        {
+            get { return EventId; }
+            set { EventId = value; }
+        }
 
+        public void Fill(IDataReader oReader)
+        {
+            EventId = (int)oReader["EventId"];
+            ModuleId = (int)oReader["ModuleId"];
+            UserId = (int)oReader["UserId"];
+            CategoryId = (int)oReader["CategoryId"];
+            Category = Convert.ToString(oReader["Category"]);
+
+            EventDate = (DateTime)oReader["EventDate"];
+
+            if (oReader["EventDate2"] != DBNull.Value)
+                EventDate2 = (DateTime)oReader["EventDate2"];
+
+            Label = Convert.ToString(oReader["Label"]);
+
+            if (oReader["Label2"] != DBNull.Value)
+                Label2 = (string)(oReader["Label2"]);
+
+            if (oReader["Measurement"] != DBNull.Value)
+                Measurement = (double)oReader["Measurement"];
+
+            if (oReader["Measurement2"] != DBNull.Value)
+                Measurement2 = (double)oReader["Measurement2"];
+
+            if (oReader["ExternalId"] != DBNull.Value)
+                ExternalId = (string)(oReader["ExternalId"]);
+
+            if (oReader["Comments"] != DBNull.Value)
+                Comments = (string)(oReader["Comments"]);
+
+            DateCreated = (DateTime)(oReader["DateCreated"]);
+
+            if (oReader["DateModified"] != DBNull.Value)
+                DateModified = (DateTime)oReader["DateModified"];
+
+            IsDeleted = (bool)oReader["IsDeleted"];
+
+            Label_Category = Convert.ToString(oReader["Label_Category"]);
+            Label_Label = Convert.ToString(oReader["Label_Label"]);
+            Label_Label2 = Convert.ToString(oReader["Label_Label2"]);
+            Label_EventDate = Convert.ToString(oReader["Label_EventDate"]);
+            Label_EventDate2 = Convert.ToString(oReader["Label_EventDate2"]);
+            Label_Measurement = Convert.ToString(oReader["Label_Measurement"]);
+            Label_Measurement2 = Convert.ToString(oReader["Label_Measurement2"]);
+            Label_ExternalId = Convert.ToString(oReader["Label_ExternalId"]);
+            Label_Comments = Convert.ToString(oReader["Label_Comments"]);
+        }
+        #endregion
     }
 }
