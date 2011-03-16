@@ -22,7 +22,7 @@ using System;
 using System.Configuration;
 using System.Data;
 
-namespace flowmarks.Modules.Events.Components
+namespace flowmarks.Modules.Events.Components 
 {
     /// -----------------------------------------------------------------------------
     ///<summary>
@@ -36,7 +36,7 @@ namespace flowmarks.Modules.Events.Components
     /// Version 1.0     September 5, 2010    Inital Creation of properties
     /// </history>
     /// -----------------------------------------------------------------------------
-    public class CategoryInfo
+    public class CategoryInfo : DotNetNuke.Entities.Modules.IHydratable
     {
 
         #region Private Members
@@ -182,7 +182,8 @@ namespace flowmarks.Modules.Events.Components
         /// This field is an indicator noting if a category is hidden
         /// </summary>
         public bool IsHidden { get; set;}
-        #endregion
+
+
         public string Label_Category { get; set; }
         public string Label_Label { get; set; }
         public string Label_EventDate { get; set; }
@@ -191,7 +192,70 @@ namespace flowmarks.Modules.Events.Components
         public string Label_Measurement2 { get; set; }
         public string Label_Label2 { get; set; }
         public string Label_ExternalId { get; set; }
-        public string Label_Comments { get; set; }  
-        
+        public string Label_Comments { get; set; }
+
+        #endregion
+
+        #region IHydratable Implementation
+        public int KeyID
+        {
+            get { return CategoryId; }
+            set { CategoryId = value; }
+        }
+
+             public void Fill(IDataReader oReader)
+        {
+            CategoryId = (int)oReader["CategoryId"];
+
+            if (oReader["UserId"] != DBNull.Value)
+                 UserId = (int)oReader["UserId"];
+
+            if (oReader["ParentId"] != DBNull.Value)
+                ParentId = (int)(oReader["ParentId"]);
+
+            if (oReader["Name"] != DBNull.Value)
+                Name = Convert.ToString(oReader["Name"]);
+
+            if (oReader["Comments"] != DBNull.Value)
+                Comments = (string)(oReader["Comments"]);
+
+            if (oReader["DateCreated"] != DBNull.Value)
+                DateCreated = (DateTime)(oReader["DateCreated"]);
+
+            if (oReader["DateModified"] != DBNull.Value)
+                DateModified = (DateTime)oReader["DateModified"];
+
+            IsDeleted = (bool)oReader["IsDeleted"];
+            IsHidden = (bool)oReader["IsHidden"];
+
+            if (oReader["Label_Category"] != DBNull.Value)
+                Label_Category = Convert.ToString(oReader["Label_Category"]);
+
+            if (oReader["Label_Label"] != DBNull.Value)
+                Label_Label = Convert.ToString(oReader["Label_Label"]);
+
+            if (oReader["Label_Label2"] != DBNull.Value)
+                Label_Label2 = Convert.ToString(oReader["Label_Label2"]);
+
+            if (oReader["Label_EventDate"] != DBNull.Value)
+                Label_EventDate = Convert.ToString(oReader["Label_EventDate"]);
+
+            if (oReader["Label_EventDate2"] != DBNull.Value)
+                Label_EventDate2 = Convert.ToString(oReader["Label_EventDate2"]);
+
+            if (oReader["Label_Measurement"] != DBNull.Value)
+                     Label_Measurement = Convert.ToString(oReader["Label_Measurement"]);
+
+            if (oReader["Label_Measurement2"] != DBNull.Value)
+                     Label_Measurement2 = Convert.ToString(oReader["Label_Measurement2"]);
+
+            if (oReader["Label_ExternalId"] != DBNull.Value)
+                     Label_ExternalId = Convert.ToString(oReader["Label_ExternalId"]);
+
+            if (oReader["Label_Comments"] != DBNull.Value)
+                     Label_Comments = Convert.ToString(oReader["Label_Comments"]);
+        }
+        #endregion
+
     }
 }

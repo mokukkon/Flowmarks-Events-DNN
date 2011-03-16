@@ -155,7 +155,9 @@ namespace flowmarks.Modules.Events.Components
             ModuleId = (int)oReader["ModuleId"];
             UserId = (int)oReader["UserId"];
             CategoryId = (int)oReader["CategoryId"];
-            Category = Convert.ToString(oReader["Category"]);
+
+            if (oReader["Category"] != DBNull.Value)
+                Category = Convert.ToString(oReader["Category"]);
 
             EventDate = (DateTime)oReader["EventDate"];
 
@@ -186,15 +188,32 @@ namespace flowmarks.Modules.Events.Components
 
             IsDeleted = (bool)oReader["IsDeleted"];
 
-            Label_Category = Convert.ToString(oReader["Label_Category"]);
-            Label_Label = Convert.ToString(oReader["Label_Label"]);
-            Label_Label2 = Convert.ToString(oReader["Label_Label2"]);
-            Label_EventDate = Convert.ToString(oReader["Label_EventDate"]);
-            Label_EventDate2 = Convert.ToString(oReader["Label_EventDate2"]);
-            Label_Measurement = Convert.ToString(oReader["Label_Measurement"]);
-            Label_Measurement2 = Convert.ToString(oReader["Label_Measurement2"]);
-            Label_ExternalId = Convert.ToString(oReader["Label_ExternalId"]);
-            Label_Comments = Convert.ToString(oReader["Label_Comments"]);
+            if (oReader["Label_Category"] != DBNull.Value)
+                Label_Category = Convert.ToString(oReader["Label_Category"]);
+
+            if (oReader["Label_Label"] != DBNull.Value)
+                Label_Label = Convert.ToString(oReader["Label_Label"]);
+
+            if (oReader["Label_Label2"] != DBNull.Value)
+                Label_Label2 = Convert.ToString(oReader["Label_Label2"]);
+
+            if (oReader["Label_EventDate"] != DBNull.Value)
+                Label_EventDate = Convert.ToString(oReader["Label_EventDate"]);
+
+            if (oReader["Label_EventDate2"] != DBNull.Value)
+                Label_EventDate2 = Convert.ToString(oReader["Label_EventDate2"]);
+
+            if (oReader["Label_Measurement"] != DBNull.Value)
+                Label_Measurement = Convert.ToString(oReader["Label_Measurement"]);
+
+            if (oReader["Label_Measurement2"] != DBNull.Value)
+                Label_Measurement2 = Convert.ToString(oReader["Label_Measurement2"]);
+
+            if (oReader["Label_ExternalId"] != DBNull.Value)
+                Label_ExternalId = Convert.ToString(oReader["Label_ExternalId"]);
+
+            if (oReader["Label_Comments"] != DBNull.Value)
+                Label_Comments = Convert.ToString(oReader["Label_Comments"]);
         }
         #endregion
     }

@@ -114,11 +114,6 @@
                         </assembly>
                         <assembly>
                             <path>bin</path>
-                            <name>DevExpress.Utils.v9.3.dll</name>
-                            <sourceFileName>DevExpress.Utils.v9.3.dll</sourceFileName>
-                        </assembly>
-                        <assembly>
-                            <path>bin</path>
                             <name>DevExpress.Web.v9.3.dll</name>
                             <sourceFileName>DevExpress.Web.v9.3.dll</sourceFileName>
                         </assembly>
