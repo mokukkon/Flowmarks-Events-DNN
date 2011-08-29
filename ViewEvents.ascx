@@ -230,9 +230,9 @@
     <div class="event old">
         <asp:ListView ID="lstContent" datakeyfield="EventId" runat="server" Style="width: 100%;"
             OnItemDataBound="lstContent_ItemDataBound" OnItemCommand="lstContent_ItemCommand"
-            OnItemCanceling="lstContent_ItemCanceling" OnItemInserting="lstContent_ItemInserting"
-            OnItemEditing="lstContent_ItemEditing" OnItemUpdating="lstContent_ItemUpdating"
-            OnItemDeleting="lstContent_ItemDeleting" OnItemCreated="lstContent_ItemCreated">
+            OnItemCanceling="lstContent_ItemCanceling" 
+            OnItemEditing="lstContent_ItemEditing" 
+            OnItemCreated="lstContent_ItemCreated">
             <LayoutTemplate>
                 <div class="listcontainer">
                     <table id="eventList" cellspacing="0" cellpadding="0" width="100%">

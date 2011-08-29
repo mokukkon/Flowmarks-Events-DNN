@@ -9,8 +9,8 @@
 //------------------------------------------------------------------------------
 
 namespace flowmarks.Modules.Events {
-    
-    
+
+
     public partial class UserSettings {
         
         /// <summary>

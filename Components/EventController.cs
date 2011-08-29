@@ -46,6 +46,9 @@ namespace flowmarks.Modules.Events.Components
 
     #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventController"/> class.
+        /// </summary>
         public EventController()
         {
         }
@@ -56,7 +59,7 @@ namespace flowmarks.Modules.Events.Components
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a new Event object to the database!
+        /// Adds a new Event object to the database
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -76,7 +79,8 @@ namespace flowmarks.Modules.Events.Components
         /// <remarks>
         /// </remarks>
         /// <param name="ModuleId">The Id of the module</param>
-        /// <param name="EventId">The Id of the item</param>
+        /// <param name="UserId">The Id of the user</param>
+        /// <param name="EventId">The Id of the event</param>
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------
@@ -91,7 +95,8 @@ namespace flowmarks.Modules.Events.Components
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="moduleId">The Id of the module</param>
+        /// <param name="ModuleId">The Id of the module</param>
+        /// <param name="UserId">The Id of the user</param>
         /// <param name="EventId">The Id of the item</param>
         /// <history>
         /// </history>
@@ -107,7 +112,8 @@ namespace flowmarks.Modules.Events.Components
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="moduleId">The Id of the module</param>
+        /// <param name="ModuleId">The Id of the module</param>
+        /// <param name="UserId">The Id of the user</param>
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------
@@ -116,13 +122,14 @@ namespace flowmarks.Modules.Events.Components
             return CBO.FillCollection< EventInfo >(DataProvider.Instance().GetEvents(ModuleId, UserId));
         }
 
-        /// -----------------------------------------------------------------------------
         /// <summary>
         /// gets an object from the database
         /// </summary>
-        /// <remarks>
-        /// </remarks>
-        /// <param name="moduleId">The Id of the module</param>
+        /// <param name="ModuleId">The Id of the module</param>
+        /// <param name="UserId">The Id of the user</param>
+        /// <param name="CategoryId">The Id of the category</param>
+        /// <returns></returns>
+        /// -----------------------------------------------------------------------------
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------

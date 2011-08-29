@@ -104,7 +104,7 @@ namespace flowmarks.Modules.Events
                 oController.UpdateModuleSetting(this.ModuleId, "fm_Events_ReportsToNewWindow", chkReportsToNewWindow.Checked.ToString());
 
                 //refresh cache
-                SynchronizeModule();
+                ModuleController.SynchronizeModule(ModuleId);
             }
             catch (Exception exc) //Module failed to load
             {
@@ -114,6 +114,11 @@ namespace flowmarks.Modules.Events
 
         #endregion
 
+        /// <summary>
+        /// Gets the description of module's dll.
+        /// </summary>
+        /// <param name="filename">The filename.</param>
+        /// <returns></returns>
         public string GetModuleDllDescription(string filename)
         {
             string s = null;
@@ -131,13 +136,18 @@ namespace flowmarks.Modules.Events
             }
             else
             {
-                s = pathfilename + " , " + GetSize(fFile.Length) + " , " + fFile.LastWriteTime.ToString("dd.MM.yyyy HH:mm.ss");
+                s = pathfilename + " , " + FormatSize(fFile.Length) + " , " + fFile.LastWriteTime.ToString("dd.MM.yyyy HH:mm.ss");
             }
 
             return s;
         }
 
-        public static string GetSize(long size)
+        /// <summary>
+        /// Get formatted the file size .
+        /// </summary>
+        /// <param name="size">The size in bytes.</param>
+        /// <returns></returns>
+        public static string FormatSize(long size)
         {
             double s = size;
             string[] format = new string[] { "{0} bytes", "{0} KB", "{0} MB", "{0} GB", "{0} TB", "{0} PB", "{0} EB" };

@@ -46,7 +46,7 @@ using System.Web.UI.HtmlControls;
 namespace flowmarks.Modules.Events
 {
     /// <summary>
-    /// Displays the Event entries to users
+    /// Display and edit Events
     /// </summary>
     partial class ViewEvents : PortalModuleBase, IActionable
     {
@@ -54,24 +54,19 @@ namespace flowmarks.Modules.Events
         private const int AnonymousUserId = -1;
         private const int EveryUserId = 0;
 
-        protected global::DotNetNuke.UI.UserControls.SectionHeadControl dshSignEntry;
-        protected PortalSecurity pSecurity;
-        public DotNetNuke.Services.Log.EventLog.EventLogController EventLog = new DotNetNuke.Services.Log.EventLog.EventLogController();
+        /// <summary>
+        /// DotNetNuke Event logger
+        /// </summary>
+        public DotNetNuke.Services.Log.EventLog.EventLogController EventLogger = new DotNetNuke.Services.Log.EventLog.EventLogController();
 
         #region Properties
 
-        protected PagedDataSource Pds
-        {
-            get
-            {
-                return _pds;
-            }
-            set
-            {
-                _pds = value;
-            }
-        }
-
+        /// <summary>
+        /// Gets or sets the selected category.
+        /// </summary>
+        /// <value>
+        /// The selected category.
+        /// </value>
         protected int? SelectedCategory
         {
             get
@@ -99,6 +94,9 @@ namespace flowmarks.Modules.Events
 
         }
 
+        /// <summary>
+        /// Get the skin source from active tab and format as a querystring parameter
+        /// </summary>
         public string SkinSrc
         {
             get
@@ -113,6 +111,9 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Get the container source from active tab and format as a querystring parameter
+        /// </summary>
         public string ConSrc
         {
             get
@@ -127,23 +128,20 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Combines the formatted date and time.
+        /// </summary>
         public string DateTimeFormat
         {
             get
             {
                 return DateFormat + " " + TimeFormat;
-                //object format = Settings["fm_Events_DateTimeFormat"];
-                //if (format != null && !String.IsNullOrEmpty(format.ToString()))
-                //{
-                //    return format.ToString();
-                //}
-                //else
-                //{
-                //    return "g";
-                //}
             }
         }
 
+        /// <summary>
+        ///  Gets the date format from settings or falls back to default.
+        /// </summary>
         public string DateFormat
         {
             get
@@ -161,6 +159,9 @@ namespace flowmarks.Modules.Events
 
         }
 
+        /// <summary>
+        /// Gets the time format from settings or falls back to default.
+        /// </summary>
         public string TimeFormat
         {
             get
@@ -177,6 +178,12 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether editing is allowed for non-logged-in users.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if anonymous edits allowed; otherwise, <c>false</c>.
+        /// </value>
         public bool AllowAnonymousEdits
         {
             get
@@ -192,11 +199,16 @@ namespace flowmarks.Modules.Events
         #endregion
 
         #region Private Members
-        protected string _HeaderTemplate;           //Template for header row
-        protected string _ItemTemplate;             //Template for item template
-        protected string _AlternatingItemTemplate;  //Template for alternating items
-        protected string _FooterTemplate;           //Template for footer row
-        private PagedDataSource _pds;
+
+        /// <summary>
+        /// Template for event items
+        /// </summary>
+        protected string _ItemTemplate;
+        
+        /// <summary>
+        /// Template for alternating event items
+        /// </summary>
+        protected string _AlternatingItemTemplate; 
 
         #endregion
 
@@ -241,22 +253,14 @@ namespace flowmarks.Modules.Events
 
         }
 
-        protected void SetCulture(string Label, string locale)
-        {
-            Thread.CurrentThread.CurrentUICulture = new CultureInfo(Label);
-            Thread.CurrentThread.CurrentCulture = new CultureInfo(locale);
-        }
-
         /// <summary>
         /// Gets the localized templates for the module
         /// </summary>        
         private void LoadTemplates()
         {
             //Loan Templates
-            _HeaderTemplate = Localization.GetString("HeaderTemplate", LocalResourceFile);
             _ItemTemplate = Localization.GetString("ItemTemplate", LocalResourceFile);
             _AlternatingItemTemplate = Localization.GetString("AlternatingItemTemplate", LocalResourceFile);
-            _FooterTemplate = Localization.GetString("FooterTemplate", LocalResourceFile);
         }
 
         /// <summary>
@@ -366,7 +370,6 @@ namespace flowmarks.Modules.Events
             }
 
             //bind the content to the repeater
-            Pds = oDataSource;
             lstContent.DataSource = oDataSource;
             lstContent.DataBind();
 
@@ -374,6 +377,11 @@ namespace flowmarks.Modules.Events
             pnlNoRecords.Visible = false;
         }
 
+        /// <summary>
+        /// Handles the ItemEditing event of the lstContent control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewEditEventArgs"/> instance containing the event data.</param>
         protected void lstContent_ItemEditing(object sender, ListViewEditEventArgs e)
         {
             CloseInsert();
@@ -381,6 +389,11 @@ namespace flowmarks.Modules.Events
             LoadEventEntries();
         }
 
+        /// <summary>
+        /// Handles the ItemCreated event of the lstContent control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewItemEventArgs"/> instance containing the event data.</param>
         protected void lstContent_ItemCreated(object sender, ListViewItemEventArgs e)
         {
 
@@ -424,19 +437,11 @@ namespace flowmarks.Modules.Events
             }
         }
 
-
-        protected void lstContent_ItemInserting(object sender, ListViewInsertEventArgs e)
-        {
-        }
-
-        protected void lstContent_ItemUpdating(object sender, ListViewUpdateEventArgs e)
-        {
-        }
-
-        protected void lstContent_ItemDeleting(object sender, ListViewDeleteEventArgs e)
-        {
-        }
-
+        /// <summary>
+        /// Handles the Click event of the cmdAdd control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void cmdAdd_Click(object sender, EventArgs e)
         {
             CloseEdit();
@@ -444,6 +449,11 @@ namespace flowmarks.Modules.Events
             LoadEventEntries();
         }
 
+        /// <summary>
+        /// Handles the Click event of the cmdQuickAdd control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void cmdQuickAdd_Click(object sender, EventArgs e)
         {
             EventInfo oInfo = new EventInfo();
@@ -462,6 +472,11 @@ namespace flowmarks.Modules.Events
         }
 
 
+        /// <summary>
+        /// Handles the ItemCanceling event of the lstContent control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewCancelEventArgs"/> instance containing the event data.</param>
         protected void lstContent_ItemCanceling(object sender, ListViewCancelEventArgs e)
         {
             CloseInsert();
@@ -472,7 +487,6 @@ namespace flowmarks.Modules.Events
         private void CloseInsert()
         {
             lstContent.InsertItemPosition = InsertItemPosition.None;
-            //((LinkButton)lvwCustomers.FindControl("NewButton")).Visible = true;
         }
 
         private void CloseEdit()
@@ -481,11 +495,21 @@ namespace flowmarks.Modules.Events
 
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ddlFilterCategory control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void ddlFilterCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             LoadEventEntries();
         }
 
+        /// <summary>
+        /// Handles the SelectedIndexChanged event of the ddlRootCategory control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void ddlRootCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -537,6 +561,10 @@ namespace flowmarks.Modules.Events
         }
 
         string lastHeader = null;
+        /// <summary>
+        /// Adds the grouping header row for future and past events.
+        /// </summary>
+        /// <returns></returns>
         protected string AddGroupingRowForFutureAndPast()
         {
             DateTime eventDate = (DateTime)Eval("EventDate");
@@ -653,11 +681,13 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Handles the ItemCommand event of the lstContent control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewCommandEventArgs"/> instance containing the event data.</param>
         protected void lstContent_ItemCommand(object sender, ListViewCommandEventArgs e)
         {
-            //ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-            //string eventID = lstContent.DataKeys[dataItem.DisplayIndex].Value.ToString();
-
             switch (e.CommandName)
             {
                 case "Insert":
@@ -683,8 +713,6 @@ namespace flowmarks.Modules.Events
             TextBox txtLabel = (TextBox)item.FindControl("txtLabel");
             TextBox txtComments = (TextBox)item.FindControl("txtComments");
             TextBox txtMeasurement = (TextBox)item.FindControl("txtMeasurement");
-            //ASPxDateEdit dateEventDate = (ASPxDateEdit)item.FindControl("dateEventDate");
-            //ASPxTimeEdit timeEventDate = (ASPxTimeEdit)item.FindControl("timeEventDate");
             TextBox dateEventDate = (TextBox)item.FindControl("dateEventDate");
             TextBox dateEventDate2 = (TextBox)item.FindControl("dateEventDate2");
 
@@ -763,7 +791,6 @@ namespace flowmarks.Modules.Events
             TextBox txtLabel = (TextBox)item.FindControl("txtLabel");
             TextBox txtComments = (TextBox)item.FindControl("txtComments");
             TextBox txtMeasurement = (TextBox)item.FindControl("txtMeasurement");
-            //ASPxDateEdit dateEventDate = (ASPxDateEdit)item.FindControl("dateEventDate");
             TextBox dateEventDate = (TextBox)item.FindControl("dateEventDate");
 
             DropDownList ddlCategory = (DropDownList)item.FindControl("ddlCategory");
@@ -808,7 +835,7 @@ namespace flowmarks.Modules.Events
                     }
                     catch (Exception ex)
                     {
-                        EventLog.AddLog("flowmarks_Events", string.Format("InsertEvent: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
+                        EventLogger.AddLog("flowmarks_Events", string.Format("InsertEvent: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
                         ShowError("Error creating event: " + ex.Message);
                     }
                     finally
@@ -859,7 +886,7 @@ namespace flowmarks.Modules.Events
             }
             catch (Exception ex)
             {
-                EventLog.AddLog("flowmarks_Events", string.Format("UpdateEvent: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
+                EventLogger.AddLog("flowmarks_Events", string.Format("UpdateEvent: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
                 ShowError("Error: " + ex.Message);
             }
             finally
@@ -867,8 +894,6 @@ namespace flowmarks.Modules.Events
                 //Reload Event display
                 LoadEventEntries();
             }
-
-
         }
 
         private void DeleteEvent(string sEventID)
@@ -900,7 +925,7 @@ namespace flowmarks.Modules.Events
             }
             catch (Exception ex)
             {
-                EventLog.AddLog("flowmarks_Events", string.Format("DeleteEvent: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
+                EventLogger.AddLog("flowmarks_Events", string.Format("DeleteEvent: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
                 ShowError("Error: " + ex.Message);
             }
             finally
@@ -911,6 +936,12 @@ namespace flowmarks.Modules.Events
 
         }
 
+        /// <summary>
+        /// Gets the label.
+        /// </summary>
+        /// <param name="label">The label.</param>
+        /// <param name="controlLabel">The control label.</param>
+        /// <returns></returns>
         public string GetLabel(Object label, String controlLabel)
         {
             string defaultLabel = Localization.GetString(controlLabel, LocalResourceFile);
@@ -921,6 +952,12 @@ namespace flowmarks.Modules.Events
                 return Server.HtmlEncode(label.ToString());
         }
 
+        /// <summary>
+        /// Gets the last date.
+        /// </summary>
+        /// <param name="created">The date created.</param>
+        /// <param name="modified">The date modified.</param>
+        /// <returns></returns>
         public DateTime GetLastDate(Object created, Object modified)
         {
             var dateCreated = (DateTime)created;
@@ -931,6 +968,11 @@ namespace flowmarks.Modules.Events
                 return dateCreated;
         }
 
+        /// <summary>
+        /// Format a tooltip string from EventInfo object
+        /// </summary>
+        /// <param name="dataitem">An EventInfo object</param>
+        /// <returns></returns>
         public string ToolTip(object dataitem)
         {
             StringBuilder sb = new StringBuilder();
@@ -964,17 +1006,14 @@ namespace flowmarks.Modules.Events
                     if (!string.IsNullOrEmpty(oInfo.Comments))
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_Comments, "lblComments").PadRight(labelwidth), oInfo.Comments);
 
-                    //sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(null, "lblEventId").PadRight(labelwidth), oInfo.EventId);
                     if (!string.IsNullOrEmpty(oInfo.ExternalId))
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_ExternalId, "lblExternalId").PadRight(labelwidth), oInfo.ExternalId);
 
-                    //sb.AppendFormat(Environment.NewLine);
                     sb.AppendFormat("{0}: {1}" + Environment.NewLine, "Edited", GetLastDate(oInfo.DateCreated, oInfo.DateModified).ToString(DateTimeFormat));
-                    //sb.AppendFormat("edited {0} ago" + Environment.NewLine, formatTimeSpan(GetLastDate(oInfo.DateCreated, oInfo.DateModified)));
                 }
                 catch (Exception ex)
                 {
-                    EventLog.AddLog("flowmarks_Events", string.Format("ToolTip: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
+                    EventLogger.AddLog("flowmarks_Events", string.Format("ToolTip: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
                     ShowError(ex.Message);
                 }
             }
@@ -1007,11 +1046,15 @@ namespace flowmarks.Modules.Events
             lblEventDate2.Text = GetLabel(category.Label_EventDate2, "lblEventDate2");
             lblMeasurement.Text = GetLabel(category.Label_Measurement, "lblMeasurement");
             lblMeasurement2.Text = GetLabel(category.Label_Measurement2, "lblMeasurement2");
-            //lblEventId.Text = GetLabel(null, "lblEventId");
             lblExternalId.Text = GetLabel(category.Label_ExternalId, "lblExternalId");
         }
 
 
+        /// <summary>
+        /// Converts to local time.
+        /// </summary>
+        /// <param name="eventDate">The event date.</param>
+        /// <returns></returns>
         public DateTime ConvertToLocalTime(Object eventDate)
         {
             var dt = (DateTime)eventDate;
@@ -1020,6 +1063,11 @@ namespace flowmarks.Modules.Events
             return convertedDate.ToLocalTime();
         }
 
+        /// <summary>
+        /// Formats the time span.
+        /// </summary>
+        /// <param name="eventDate">The event date.</param>
+        /// <returns></returns>
         public string formatTimeSpan(DateTime eventDate)
         {
             TimeSpan ts;
@@ -1076,6 +1124,11 @@ namespace flowmarks.Modules.Events
             return result;
         }
 
+        /// <summary>
+        /// Formats the datetime relative to the current time.
+        /// </summary>
+        /// <param name="dt">The datetime.</param>
+        /// <returns></returns>
         public string formatRelativeTime(DateTime dt)
         {
             const int SECOND = 1;
@@ -1134,11 +1187,19 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Show error message.
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowError(string message)
         {
             Utils.ShowError(message, MessageBox, lblMessage);
         }
 
+        /// <summary>
+        /// Show info-level message.
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowInfo(string message)
         {
             Utils.ShowInfo(message, MessageBox, lblMessage);

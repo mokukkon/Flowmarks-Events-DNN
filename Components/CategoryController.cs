@@ -46,6 +46,9 @@ namespace flowmarks.Modules.Events.Components
 
         #region Constructors
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryController"/> class.
+        /// </summary>
         public CategoryController()
         {
         }
@@ -84,7 +87,7 @@ namespace flowmarks.Modules.Events.Components
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="ModuleId">The Id of the module</param>
+        /// <param name="UserId">The Id of the user</param>
         /// <param name="CategoryId">The Id of the item</param>
         /// <history>
         /// </history>
@@ -100,7 +103,7 @@ namespace flowmarks.Modules.Events.Components
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="moduleId">The Id of the module</param>
+        /// <param name="UserId">The Id of the user</param>
         /// <param name="CategoryId">The Id of the item</param>
         /// <history>
         /// </history>
@@ -116,7 +119,7 @@ namespace flowmarks.Modules.Events.Components
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="moduleId">The Id of the module</param>
+        /// <param name="UserId">The Id of the user</param>
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------
@@ -132,7 +135,9 @@ namespace flowmarks.Modules.Events.Components
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="moduleId">The Id of the module</param>
+        /// <param name="UserId">The Id of the user</param>
+        /// <param name="ParentId">The Id of the parent category</param>
+        /// <param name="IsHidden">Indicator of a hidden category</param>
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------

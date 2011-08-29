@@ -42,7 +42,9 @@ namespace flowmarks.Modules.Events.Components
 
         #region Constructors
 
-        // initialization
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EventInfo"/> class.
+        /// </summary>
         public EventInfo()
         {
         }
@@ -131,24 +133,97 @@ namespace flowmarks.Modules.Events.Components
         /// </summary>
         public bool IsDeleted { get; set; }
 
+        /// <summary>
+        /// Gets or sets the category label.
+        /// </summary>
+        /// <value>
+        /// The category label.
+        /// </value>
         public string Label_Category { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the label label.
+        /// </summary>
+        /// <value>
+        /// The label label.
+        /// </value>
         public string Label_Label { get; set; }
+
+        /// <summary>
+        /// Gets or sets the label2 label.
+        /// </summary>
+        /// <value>
+        /// The label2 label.
+        /// </value>
         public string Label_Label2 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EventDate label.
+        /// </summary>
+        /// <value>
+        /// The EventDate label.
+        /// </value>
         public string Label_EventDate { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EventDate2 label.
+        /// </summary>
+        /// <value>
+        /// The EventDate2 label.
+        /// </value>
         public string Label_EventDate2 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the measurement label.
+        /// </summary>
+        /// <value>
+        /// The measurement label.
+        /// </value>
         public string Label_Measurement { get; set; }
+
+        /// <summary>
+        /// Gets or sets the measurement2 label.
+        /// </summary>
+        /// <value>
+        /// The measurement2 label.
+        /// </value>
         public string Label_Measurement2 { get; set; }
+
+        /// <summary>
+        /// Gets or sets the external id label.
+        /// </summary>
+        /// <value>
+        /// The external id label.
+        /// </value>
         public string Label_ExternalId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the comments label.
+        /// </summary>
+        /// <value>
+        /// The comments label.
+        /// </value>
         public string Label_Comments { get; set; }
 
         #endregion
         #region IHydratable Implementation
+
+        /// <summary>
+        /// Gets or sets the IHydratable key ID.
+        /// </summary>
+        /// <value>
+        /// The key ID.
+        /// </value>
         public int KeyID
         {
             get { return EventId; }
             set { EventId = value; }
         }
 
+        /// <summary>
+        /// Fills the specified EventInfo.
+        /// </summary>
+        /// <param name="oReader">The IDataReader object.</param>
         public void Fill(IDataReader oReader)
         {
             EventId = (int)oReader["EventId"];

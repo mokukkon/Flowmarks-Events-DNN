@@ -42,15 +42,24 @@ using System.Collections.Specialized;
 
 namespace flowmarks.Modules.Events
 {
+    /// <summary>
+    /// Display and edit Categories
+    /// </summary>
     public partial class UserSettings : PortalModuleBase
     {
-        public DotNetNuke.Services.Log.EventLog.EventLogController EventLog = new DotNetNuke.Services.Log.EventLog.EventLogController();
+        /// <summary>
+        /// DotNetNuke Event logger
+        /// </summary>
+        public DotNetNuke.Services.Log.EventLog.EventLogController EventLogger = new DotNetNuke.Services.Log.EventLog.EventLogController();
         private const int NoCategoryId = -1;
         private const int AnonymousUserId = -1;
         private const int EveryUserId = 0;
 
         #region "Properties"
 
+        /// <summary>
+        /// Get the skin source from active tab and format as a querystring parameter
+        /// </summary>
         public string SkinSrc
         {
             get
@@ -65,6 +74,9 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Get the container source from active tab and format as a querystring parameter
+        /// </summary>
         public string ConSrc
         {
             get
@@ -79,6 +91,12 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether editing is allowed for non-logged-in users.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if anonymous edits allowed; otherwise, <c>false</c>.
+        /// </value>
         public bool AllowAnonymousEdits
         {
             get
@@ -104,6 +122,11 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Handles the Load event of the Page control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
             try
@@ -165,6 +188,11 @@ namespace flowmarks.Modules.Events
         }
 
 
+        /// <summary>
+        /// Handles the RowUpdating event of the gvCategorySettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DevExpress.Web.Data.ASPxDataUpdatingEventArgs"/> instance containing the event data.</param>
         protected void gvCategorySettings_RowUpdating(object sender, DevExpress.Web.Data.ASPxDataUpdatingEventArgs e)
         {
             if (UserId == AnonymousUserId && !AllowAnonymousEdits)
@@ -194,6 +222,11 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Handles the RowDeleting event of the gvCategorySettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DevExpress.Web.Data.ASPxDataDeletingEventArgs"/> instance containing the event data.</param>
         protected void gvCategorySettings_RowDeleting(object sender, DevExpress.Web.Data.ASPxDataDeletingEventArgs e)
         {
             try
@@ -234,11 +267,16 @@ namespace flowmarks.Modules.Events
             }
             catch (Exception ex)
             {
-                EventLog.AddLog("flowmark_Events", string.Format("gvCategorySettings_RowDeleting: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
+                EventLogger.AddLog("flowmark_Events", string.Format("gvCategorySettings_RowDeleting: {0}", ex.ToString()), PortalSettings, UserId, DotNetNuke.Services.Log.EventLog.EventLogController.EventLogType.HOST_ALERT);
                 ShowError("Couldn't delete category. Error: " + ex.Message);
             }
         }
 
+        /// <summary>
+        /// Handles the RowInserting event of the gvCategorySettings control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="DevExpress.Web.Data.ASPxDataInsertingEventArgs"/> instance containing the event data.</param>
         protected void gvCategorySettings_RowInserting(object sender, DevExpress.Web.Data.ASPxDataInsertingEventArgs e)
         {
             if (UserId == AnonymousUserId && !AllowAnonymousEdits)
@@ -318,11 +356,19 @@ namespace flowmarks.Modules.Events
             return category;
         }
 
+        /// <summary>
+        /// Show error message.
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowError(string message)
         {
             Utils.ShowError(message, MessageBox, lblMessage);
         }
 
+        /// <summary>
+        /// Show info-level message.
+        /// </summary>
+        /// <param name="message"></param>
         public void ShowInfo(string message)
         {
             Utils.ShowInfo(message, MessageBox, lblMessage);

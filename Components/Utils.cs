@@ -7,9 +7,18 @@ using System.Web.UI.HtmlControls;
 
 namespace flowmarks.Modules.Events.Components
 {
+    /// <summary>
+    /// Static utility methods
+    /// </summary>
     public class Utils
     {
 
+        /// <summary>
+        /// Format a string as a fixed length UI string
+        /// </summary>
+        /// <param name="original">The original string.</param>
+        /// <param name="maxlength">The maximum length.</param>
+        /// <returns></returns>
         public static string UIFixedLength(string original, int maxlength)
         {
             string trailString = "...";
@@ -28,6 +37,12 @@ namespace flowmarks.Modules.Events.Components
 
         }
 
+        /// <summary>
+        /// Styles and shows the error message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="messageBox">The message box.</param>
+        /// <param name="lblMessage">Label control.</param>
         public static void ShowError(string message, HtmlGenericControl messageBox, Label lblMessage)
         {
             messageBox.Style.Add("background-color", "#cd5c5c");
@@ -38,6 +53,12 @@ namespace flowmarks.Modules.Events.Components
             messageBox.Visible = true;
         }
 
+        /// <summary>
+        /// Styles and shows the info message.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="messageBox">The message box.</param>
+        /// <param name="lblMessage">Label control.</param>
         public static void ShowInfo(string message, HtmlGenericControl messageBox, Label lblMessage)
         {
             messageBox.Style.Add("background-color", "#fad163");
@@ -48,6 +69,14 @@ namespace flowmarks.Modules.Events.Components
             messageBox.Visible = true;
         }
 
+        /// <summary>
+        /// Formats the report URL.
+        /// </summary>
+        /// <param name="url">The report URL.</param>
+        /// <param name="Request">The request.</param>
+        /// <param name="SkinSrc">The skin SRC.</param>
+        /// <param name="ConSrc">The con SRC.</param>
+        /// <returns>Report url with skin and container in querystring</returns>
         public static string FormatReportUrl(string url, HttpRequest Request, string SkinSrc, string ConSrc)
         {
             if (url.Contains(Request.Url.Scheme))
