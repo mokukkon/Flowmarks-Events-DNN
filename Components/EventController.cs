@@ -133,7 +133,7 @@ namespace flowmarks.Modules.Events.Components
         /// <history>
         /// </history>
         /// -----------------------------------------------------------------------------
-        public List<EventInfo> GetEvents(int ModuleId, int UserId, int? CategoryId)
+        public List<EventInfo> GetEvents(int? ModuleId, int UserId, int? CategoryId)
         {
             return CBO.FillCollection<EventInfo>(DataProvider.Instance().GetEvents(ModuleId, UserId, CategoryId));
         }

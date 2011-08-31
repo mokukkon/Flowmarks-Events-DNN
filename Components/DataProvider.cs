@@ -103,7 +103,7 @@ namespace flowmarks.Modules.Events.Components
         /// <param name="UserId">The user id.</param>
         /// <param name="CategoryId">The category id.</param>
         /// <returns></returns>
-        public abstract IDataReader GetEvents(int ModuleId, int UserId, int? CategoryId);
+        public abstract IDataReader GetEvents(int? ModuleId, int UserId, int? CategoryId);
 
         /// <summary>
         /// Updates the event.

@@ -196,6 +196,18 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        public bool ModuleIsolation
+        {
+            get
+            {
+                object setting = Settings["fm_Events_ModuleIsolation"];
+                if (setting != null && bool.Parse(setting.ToString()))
+                    return true;
+                else
+                    return false;
+            }
+        }
+
         #endregion
 
         #region Private Members
@@ -204,11 +216,11 @@ namespace flowmarks.Modules.Events
         /// Template for event items
         /// </summary>
         protected string _ItemTemplate;
-        
+
         /// <summary>
         /// Template for alternating event items
         /// </summary>
-        protected string _AlternatingItemTemplate; 
+        protected string _AlternatingItemTemplate;
 
         #endregion
 
@@ -293,6 +305,8 @@ namespace flowmarks.Modules.Events
             {
                 lnkReport.Target = "_blank";
             }
+
+
         }
 
         string FormatReportUrl(string url)
@@ -320,7 +334,9 @@ namespace flowmarks.Modules.Events
             List<EventInfo> colEvents;
 
             //get the content from the Event table
-            colEvents = objEvents.GetEvents(ModuleId, UserId, SelectedCategory);
+            int? modId;
+            if (ModuleIsolation) { modId = ModuleId; } else { modId = null; }
+            colEvents = objEvents.GetEvents(modId, UserId, SelectedCategory);
 
             //Setup the paged datasource
             PagedDataSource oDataSource = new PagedDataSource();
@@ -375,6 +391,33 @@ namespace flowmarks.Modules.Events
 
             //Ensure that the no records message isn't visible
             pnlNoRecords.Visible = false;
+        }
+
+        /// <summary>
+        /// Handles the Itemœnserting event of the lstContent control. A Stub for AutoEventWireup.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewInsertEventArgs"/> instance containing the event data.</param>
+        protected void lstContent_ItemInserting(object sender, ListViewInsertEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles the ItemUpdating event of the lstContent control. A Stub for AutoEventWireup.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewUpdateEventArgs"/> instance containing the event data.</param>
+        protected void lstContent_ItemUpdating(object sender, ListViewUpdateEventArgs e)
+        {
+        }
+
+        /// <summary>
+        /// Handles the ItemDeleting event of the lstContent control. A Stub for AutoEventWireup.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewDeleteEventArgs"/> instance containing the event data.</param>
+        protected void lstContent_ItemDeleting(object sender, ListViewDeleteEventArgs e)
+        {
         }
 
         /// <summary>
@@ -434,6 +477,34 @@ namespace flowmarks.Modules.Events
                 }
                 TextBox dateEventDate = (TextBox)e.Item.FindControl("dateEventDate");
                 dateEventDate.Text = DateTime.Now.ToString(DateTimeFormat);
+
+                SetRegexValidators(e.Item);
+
+            }
+        }
+
+        protected void lstContent_PreRender(object sender, EventArgs e)
+        {
+            if (this.lstContent.EditIndex != -1)
+            {
+                SetRegexValidators(this.lstContent.Items[this.lstContent.EditIndex]);
+            }
+        }
+
+        private void SetRegexValidators(ListViewItem item)
+        {
+            RegularExpressionValidator valdateEventDateRegex = (RegularExpressionValidator)item.FindControl("valdateEventDateRegex");
+            RegularExpressionValidator valdateEventDate2Regex = (RegularExpressionValidator)item.FindControl("valdateEventDate2Regex");
+            object dateTimeValidationRegex = Settings["fm_Events_DateTimeValidationRegex"];
+            if (dateTimeValidationRegex != null && !String.IsNullOrEmpty(dateTimeValidationRegex.ToString()))
+            {
+                valdateEventDateRegex.ValidationExpression = valdateEventDate2Regex.ValidationExpression = dateTimeValidationRegex.ToString();
+                valdateEventDateRegex.ErrorMessage = valdateEventDate2Regex.ErrorMessage = DateTimeFormat;
+                // dd.MM.yyyy HH:mm ValidationExpression="^(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[012])\.(19|20)\d\d[ ](0[0-9]|[1][0-9]|2[0-3])[:]([0-5][0-9])$"  
+            }
+            else
+            {
+                valdateEventDateRegex.Enabled = valdateEventDate2Regex.Enabled = false;
             }
         }
 

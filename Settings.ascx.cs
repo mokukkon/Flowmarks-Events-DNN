@@ -48,13 +48,18 @@ namespace flowmarks.Modules.Events
 
                 //Get all settings to objects
                 object allowAnonymousEdits = ModuleSettings["fm_Events_AnonymousEdits"];
+                object moduleIsolation = ModuleSettings["fm_Events_ModuleIsolation"];
                 object pageSizeSetting = ModuleSettings["fm_Events_PageSize"];
                 object dateFormat = ModuleSettings["fm_Events_DateFormat"];
                 object timeFormat = ModuleSettings["fm_Events_TimeFormat"];
+                object dateTimeValidationRegex = ModuleSettings["fm_Events_DateTimeValidationRegex"];
                 object reportsUrl = ModuleSettings["fm_Events_ReportsUrl"];
                 object reportsToNewWindow = ModuleSettings["fm_Events_ReportsToNewWindow"];
 
                 //Conditionally set or default them
+
+                if (moduleIsolation != null)
+                    chkModuleIsolation.Checked = bool.Parse(moduleIsolation.ToString());
 
                 if (allowAnonymousEdits != null)
                     chkAllowAnonymousEdits.Checked = bool.Parse(allowAnonymousEdits.ToString());
@@ -72,6 +77,9 @@ namespace flowmarks.Modules.Events
 
                 if (timeFormat != null)
                     txtTimeFormat.Text = (string)timeFormat;
+
+                if (dateTimeValidationRegex != null)
+                    txtDateTimeValidationRegex.Text = (string)dateTimeValidationRegex;
 
                 if (reportsUrl != null)
                     txtReportsUrl.Text = (string)reportsUrl;
@@ -95,11 +103,13 @@ namespace flowmarks.Modules.Events
             {
                 //Save settings
                 ModuleController oController = new ModuleController();
-               
+
+                oController.UpdateModuleSetting(this.ModuleId, "fm_Events_ModuleIsolation", chkModuleIsolation.Checked.ToString());
                 oController.UpdateModuleSetting(this.ModuleId, "fm_Events_AnonymousEdits", chkAllowAnonymousEdits.Checked.ToString());
                 oController.UpdateModuleSetting(this.ModuleId, "fm_Events_PageSize", ddlPageSize.SelectedValue);
                 oController.UpdateModuleSetting(this.ModuleId, "fm_Events_DateFormat", txtDateFormat.Text);
                 oController.UpdateModuleSetting(this.ModuleId, "fm_Events_TimeFormat", txtTimeFormat.Text);
+                oController.UpdateModuleSetting(this.ModuleId, "fm_Events_DateTimeValidationRegex", txtDateTimeValidationRegex.Text);
                 oController.UpdateModuleSetting(this.ModuleId, "fm_Events_ReportsUrl", txtReportsUrl.Text);
                 oController.UpdateModuleSetting(this.ModuleId, "fm_Events_ReportsToNewWindow", chkReportsToNewWindow.Checked.ToString());
 

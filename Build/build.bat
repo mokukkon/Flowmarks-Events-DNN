@@ -41,6 +41,9 @@ XCOPY /Y %project%\flowmarks_Events.xml %package%
 REM Copy Txt
 XCOPY /Y %project%\*.txt %package%
 
+REM Copy HTML
+XCOPY /Y %project%\*.htm %package%
+
 REM Copy SqlDataProvider files
 XCOPY /Y %project%\*.SqlDataProvider %package%
 

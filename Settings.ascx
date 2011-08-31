@@ -6,7 +6,16 @@
             <asp:Label ID="lblVersion" runat="server" CssClass="et"></asp:Label>
         </td>
     </tr>
-        <tr>
+    <tr>
+        <td class="SubHead" width="200">
+            <dnn:Label ID="lblModuleIsolation" runat="server" ControlName="chkModuleIsolation"
+                Suffix=":" />
+        </td>
+        <td>
+            <asp:CheckBox ID="chkModuleIsolation" runat="server" />
+        </td>
+    </tr>
+    <tr>
         <td class="SubHead" width="200">
             <dnn:Label ID="lblAllowAnonymousEdits" runat="server" ControlName="chkAllowAnonymousEdits"
                 Suffix=":" />
@@ -47,6 +56,14 @@
     </tr>
     <tr>
         <td class="SubHead" width="200">
+            <dnn:Label ID="lblDateTimeValidationRegex" runat="server" ControlName="txtDateTimeValidationRegex" Suffix=":" />
+        </td>
+        <td>
+            <asp:TextBox ID="txtDateTimeValidationRegex" runat="server" />
+        </td>
+    </tr>
+    <tr>
+        <td class="SubHead" width="200">
             <dnn:Label ID="lblReportsUrl" runat="server" ControlName="txtReportsUrl" Suffix=":" />
         </td>
         <td>
@@ -62,5 +79,4 @@
             <asp:CheckBox ID="chkReportsToNewWindow" runat="server" />
         </td>
     </tr>
-
 </table>

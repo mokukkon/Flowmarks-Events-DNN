@@ -1,0 +1,56 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Added support for Module Isolation */
+ALTER procedure {databaseOwner}{objectQualifier}flowmarks_GetEventsByCategory
+
+	@ModuleId int,
+	@UserId int,
+	@CategoryId int = NULL
+as
+
+select e.[EventID]
+      ,e.[ModuleID]
+      ,e.[UserID]
+      ,c.[CategoryID]
+      ,c.Name As Category
+      ,c.Label_Category
+      ,c.Label_Label
+      ,c.Label_Label2
+      ,c.Label_EventDate
+      ,c.Label_EventDate2
+      ,c.Label_Measurement
+      ,c.Label_Measurement2
+      ,c.Label_Comments
+      ,c.Label_ExternalId
+      ,e.Label
+      ,e.[EventDate]
+      ,e.[EventDate2]
+      ,e.[Measurement]
+      ,e.[Measurement2]
+      ,e.[Label2]
+      ,e.[ExternalId]
+      ,e.Comments
+      ,e.[DateCreated]
+      ,e.[DateModified]
+      ,e.[IsDeleted]
+from {objectQualifier}flowmarks_Event e 
+INNER JOIN {objectQualifier}flowmarks_Category c ON (e.CategoryID = c.CategoryID AND (e.UserID = c.UserID OR c.UserID = 0))
+WHERE e.UserID = @UserId
+and (@CategoryId IS NULL OR e.CategoryID = @CategoryId or c.ParentID = @CategoryId)
+AND (ModuleId = @ModuleId OR @ModuleId IS NULL)
+AND e.IsDeleted = 0
+ORDER BY EventDate DESC	
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

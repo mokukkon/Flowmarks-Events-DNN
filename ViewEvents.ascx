@@ -229,10 +229,15 @@
     <asp:LinkButton ID="add" class="addArea" runat="server" ToolTip="New Event" OnClick="cmdAdd_Click"></asp:LinkButton>
     <div class="event old">
         <asp:ListView ID="lstContent" datakeyfield="EventId" runat="server" Style="width: 100%;"
-            OnItemDataBound="lstContent_ItemDataBound" OnItemCommand="lstContent_ItemCommand"
-            OnItemCanceling="lstContent_ItemCanceling" 
+            OnItemDataBound="lstContent_ItemDataBound" 
+            OnItemCommand="lstContent_ItemCommand"
+            OnItemCanceling="lstContent_ItemCanceling"
+            OnItemInserting="lstContent_ItemInserting"
             OnItemEditing="lstContent_ItemEditing" 
-            OnItemCreated="lstContent_ItemCreated">
+            OnItemUpdating="lstContent_ItemUpdating"
+            OnItemDeleting="lstContent_ItemDeleting"
+            OnItemCreated="lstContent_ItemCreated"
+            OnPreRender="lstContent_PreRender">
             <LayoutTemplate>
                 <div class="listcontainer">
                     <table id="eventList" cellspacing="0" cellpadding="0" width="100%">
@@ -310,7 +315,9 @@
                                         <a href="#2ndDate" title="Another date...">+</a>
                                     </div>
                                     <asp:RequiredFieldValidator ID="valdateEventDateReq" runat="server" ControlToValidate="dateEventDate"
-                                        Text="Required" ValidationGroup="ICGEvent"></asp:RequiredFieldValidator>
+                                        ErrorMessage="Required" CssClass="red" Width="0" ValidationGroup="ICGEvent"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="valdateEventDateRegex" runat="server" ControlToValidate="dateEventDate"
+                                        CssClass="red" ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr runat="server" id="trEventDate2" class="trEventDate2">
@@ -325,6 +332,10 @@
                                             <a href="#hide" title="Hide">-</a>
                                         </div>
                                     </div>
+                                    
+                                    <asp:RegularExpressionValidator ID="valdateEventDate2Regex" runat="server" ControlToValidate="dateEventDate2"
+                                        CssClass="red" ValidationGroup="ICGEvent">
+                                    </asp:RegularExpressionValidator>                                
                                 </td>
                             </tr>
                             <tr id="trName" runat="server">
@@ -365,8 +376,8 @@
                                     <div id="cmdMeasurement2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
                                         <a href="#2ndMeasurement" title="Another measurement...">+</a>
                                     </div>
-                                    <asp:RegularExpressionValidator ID="valWebsiteValid" runat="server" ControlToValidate="txtMeasurement"
-                                        Text="Only numbers allowed!" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$" ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
+                                    <asp:RegularExpressionValidator ID="valMeasurementValid" runat="server" ControlToValidate="txtMeasurement"
+                                        Text="Number required" CssClass="red" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$" ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr runat="server" id="trMeasurement2" class="trMeasurement2">
@@ -384,7 +395,7 @@
                                         </div>
                                     </div>
                                     <asp:RegularExpressionValidator ID="valnMeasurement2" runat="server" ControlToValidate="txtMeasurement2"
-                                        Text="Only numbers allowed!" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$" ValidationGroup="InsertEvent"></asp:RegularExpressionValidator>
+                                        Text="Number required" CssClass="red" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$" ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -435,7 +446,7 @@
                             <tr>
                                 <td colspan="2">
                                     <div class="buttonwrapper">
-                                        <asp:LinkButton ID="UpdateButton" runat="server" CommandName="Insert" CssClass="ovalbutton"><span>Save</span></asp:LinkButton>
+                                        <asp:LinkButton ID="UpdateButton" runat="server" CommandName="Insert" CausesValidation="true" ValidationGroup="ICGEvent" CssClass="ovalbutton"><span>Save</span></asp:LinkButton>
                                         <span class="buttonseparator" />
                                         <asp:LinkButton ID="CancelButton" runat="server" CommandName="Cancel" CssClass="ovalbutton"><span>Cancel</span></asp:LinkButton>
                                     </div>
@@ -502,7 +513,10 @@
                                         <a href="#2ndDate" title="Another date...">+</a>
                                     </div>
                                     <asp:RequiredFieldValidator ID="valdateEventDateReq" runat="server" ControlToValidate="dateEventDate"
-                                        Text="Required" ValidationGroup="ICGEvent"></asp:RequiredFieldValidator>
+                                        Text="Required" CssClass="red" Width="0" ValidationGroup="ICGEvent"></asp:RequiredFieldValidator>
+                                    <asp:RegularExpressionValidator ID="valdateEventDateRegex" runat="server" ControlToValidate="dateEventDate"
+                                        CssClass="red" ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
+
                                 </td>
                             </tr>
                             <tr runat="server" id="trEventDate2" class="trEventDate2">
@@ -519,6 +533,8 @@
                                             <a href="#hide" title="Hide">-</a>
                                         </div>
                                     </div>
+                                    <asp:RegularExpressionValidator ID="valdateEventDate2Regex" runat="server" ControlToValidate="dateEventDate2"
+                                        CssClass="red" ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr id="trName" runat="server">
@@ -563,7 +579,7 @@
                                         <a href="#2ndMeasurement" title="Another measurement...">+</a>
                                     </div>
                                     <asp:RegularExpressionValidator ID="valWebsiteValid" runat="server" ControlToValidate="txtMeasurement"
-                                        Text="Value must be numeric" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$"
+                                        Text="Number required" CssClass="red" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$"
                                         ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
@@ -583,8 +599,8 @@
                                         </div>
                                     </div>
                                     <asp:RegularExpressionValidator ID="valnMeasurement2" runat="server" ControlToValidate="txtMeasurement2"
-                                        Text="Value must be numeric" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$"
-                                        ValidationGroup="InsertEvent"></asp:RegularExpressionValidator>
+                                        Text="Number required" CssClass="red" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$"
+                                        ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
                                 </td>
                             </tr>
                             <tr>
@@ -638,7 +654,7 @@
                                 <td colspan="2">
                                     <div class="buttonwrapper">
                                         <asp:LinkButton ID="UpdateButton" runat="server" CommandArgument='<%# Bind("EventID")%>'
-                                            CommandName="Update" CssClass="saveButton"><span>Save</span></asp:LinkButton>
+                                            CommandName="Update" CssClass="saveButton" CausesValidation="true" ValidationGroup="ICGEvent" ><span>Save</span></asp:LinkButton>
                                         <span class="buttonseparator" />
                                         <asp:LinkButton ID="CancelButton" runat="server" CommandName="Cancel" CssClass="cancelButton"><span>Cancel</span></asp:LinkButton>
                                         <asp:LinkButton ID="RemoveButton" runat="server" CommandArgument='<%# Bind("EventID")%>'

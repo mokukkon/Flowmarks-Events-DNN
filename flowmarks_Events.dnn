@@ -6,7 +6,7 @@
             <foldername>flowmarks_Events</foldername>
             <modulename>Flowmarks Events</modulename>
             <description>Data entry and reporting tool for simple time series</description>
-            <version>01.00.00</version>
+            <version>01.00.01</version>
             <compatibleversions>^([0-9]{1}[4]{1}.[0-9]{1}[6-9]{1}.[0-9]{1}[0-9]{1}|[0-9]{1}[5-9]{1}.[0-9]{1}[0-9]{1}.[0-9]{1}[0-9]{1})$</compatibleversions>
             <businesscontrollerclass></businesscontrollerclass>
             <resourcefile>resources.zip</resourcefile>
@@ -41,6 +41,9 @@
             <files>
                 <file>
                     <name>flowmarks.Modules.Events.dll</name>
+                </file>
+                <file>
+                    <name>01.00.01.SqlDataProvider</name>
                 </file>
                 <file>
                     <name>01.00.00.SqlDataProvider</name>

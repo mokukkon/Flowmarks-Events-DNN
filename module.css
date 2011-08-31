@@ -320,13 +320,18 @@ div.fmImageButton
 .buttonwrapper
 {
     font-size: 12px;
-    margin-left: 100px;
+    margin-left: 130px;
     margin-bottom: 10px;
 }
 
 .ui-state-default
 {
     vertical-align: middle;
+}
+
+.red
+{
+    color: red;
 }
 
 

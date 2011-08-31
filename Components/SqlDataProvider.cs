@@ -234,7 +234,7 @@ namespace flowmarks.Modules.Events.Components
         /// <param name="UserId">The user id.</param>
         /// <param name="CategoryId">The category id.</param>
         /// <returns></returns>
-        public override IDataReader GetEvents(int ModuleId, int UserId, int? CategoryId)
+        public override IDataReader GetEvents(int? ModuleId, int UserId, int? CategoryId)
         {
             return (IDataReader)SqlHelper.ExecuteReader(ConnectionString, GetFullyQualifiedName("GetEventsByCategory"), 
                 ModuleId, 

@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ControlTitle_settings.Text" xml:space="preserve">
     <value>Flowmarks Events Settings</value>
@@ -129,7 +129,7 @@
     <value>The total number of records to display per page</value>
   </data>
   <data name="lblPageSize.Text" xml:space="preserve">
-    <value>Page Size</value>
+    <value>Page size</value>
   </data>
   <data name="lblReportsToNewWindow.Help" xml:space="preserve">
     <value>Link target ="_blank"</value>
@@ -141,7 +141,7 @@
     <value>If not empty, a Reports link will be shown</value>
   </data>
   <data name="lblReportsUrl.Text" xml:space="preserve">
-    <value>Report Module Url</value>
+    <value>Report module url</value>
   </data>
   <data name="lblDateFormat.Help" xml:space="preserve">
     <value>if not empty, overrides ShortDatePattern</value>
@@ -157,5 +157,20 @@
   </data>
   <data name="lblAllowAnonymousEdits.Text" xml:space="preserve">
     <value>Allow anonymous edits</value>
+  </data>
+  <data name="lblModuleIsolation.Help" xml:space="preserve">
+    <value>Show only events created in this module. By default, show user's events from all Flowmarks Events modules.</value>
+  </data>
+  <data name="lblModuleIsolation.Text" xml:space="preserve">
+    <value>Module isolation</value>
+  </data>
+  <data name="lblAllowAnonymousEdits.Help" xml:space="preserve">
+    <value>Non-logged-in users can perform write operations</value>
+  </data>
+  <data name="lblDateTimeValidationRegex.Help" xml:space="preserve">
+    <value>If empty, no regex validation performed</value>
+  </data>
+  <data name="lblDateTimeValidationRegex.Text" xml:space="preserve">
+    <value>Datetime validation regex</value>
   </data>
 </root>
