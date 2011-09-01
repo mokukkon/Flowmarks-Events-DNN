@@ -62,7 +62,7 @@ namespace flowmarks.Modules.Events
         #region Properties
 
         /// <summary>
-        /// Gets or sets the selected category.
+        /// Gets or sets the selected category in the dropdownlist.
         /// </summary>
         /// <value>
         /// The selected category.
@@ -196,6 +196,12 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether the module is isolated from other installed modules in the portal.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if events created in this module are visible; otherwise, <c>false</c>.
+        /// </value>
         public bool ModuleIsolation
         {
             get
@@ -228,11 +234,7 @@ namespace flowmarks.Modules.Events
 
 
         /// <summary>
-        /// On load it ensures that all Event entry information is fully bound!
-        /// 
-        /// NOTE: Due to a bug identified in version 1.0 the check for Page.IsPostBack
-        ///        has been removed as the display data was being lost on page postback
-        ///        this will be re-added as soon as the root cause has been identified
+        /// Sets up the stage and binds event entries to the listview
         /// </summary>
         /// <param Label="sender"></param>
         /// <param Label="e"></param>
@@ -315,11 +317,8 @@ namespace flowmarks.Modules.Events
         }
 
         /// <summary>
-        /// Loads the actual Event entries to the display setup.
+        /// Loads the event entries and binds to the listview.
         /// </summary>
-        /// <remarks>
-        /// Version 2.0 - Modified to use localized "No Entries" string!
-        ///</remarks>
         private void LoadEventEntries()
         {
             //Get paging elements
@@ -433,7 +432,7 @@ namespace flowmarks.Modules.Events
         }
 
         /// <summary>
-        /// Handles the ItemCreated event of the lstContent control.
+        /// Handles the ItemCreated event of the lstContent control. Insert template prepared here.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="System.Web.UI.WebControls.ListViewItemEventArgs"/> instance containing the event data.</param>
@@ -483,6 +482,11 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Handles the PreRender event of the lstContent control. Set regex datetime validators for the edit item.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         protected void lstContent_PreRender(object sender, EventArgs e)
         {
             if (this.lstContent.EditIndex != -1)
@@ -675,6 +679,7 @@ namespace flowmarks.Modules.Events
         #endregion
 
         #region Optional Interfaces
+
         /// <summary>
         /// Sets the module actions available for this module.
         /// </summary>
@@ -690,9 +695,10 @@ namespace flowmarks.Modules.Events
         #endregion
 
         #region Item Binding Events
+
         /// <summary>
-        /// This is the driving method to generating the rows of the recordset.  We output the Event
-        /// entries according the the requested style provided by the user/admin
+        /// This is the driving method to generating the rows of the listview. We output the event
+        /// entries according the the template provided by the user/admin
         /// </summary>
         /// <param Label="sender"></param>
         /// <param Label="e"></param>
