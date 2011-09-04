@@ -88,8 +88,8 @@ if not exists (select * from dbo.sysobjects where id = object_id(N'{databaseOwne
 		ALTER TABLE {databaseOwner}[{objectQualifier}flowmarks_Event] ADD CONSTRAINT [PK_{objectQualifier}flowmarks_Event] PRIMARY KEY CLUSTERED  ([EventId])
 		CREATE NONCLUSTERED INDEX [IX_{objectQualifier}flowmarks_Event] ON {databaseOwner}[{objectQualifier}flowmarks_Event] ([ModuleID])
 
-		ALTER TABLE {databaseOwner}[{objectQualifier}flowmarks_Event] WITH NOCHECK ADD CONSTRAINT [FK_{objectQualifier}flowmarks_Event_{objectQualifier}Modules] FOREIGN KEY ([ModuleID]) REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE NOT FOR REPLICATION
-		ALTER TABLE {databaseOwner}[{objectQualifier}flowmarks_Event] WITH NOCHECK ADD CONSTRAINT [FK_{objectQualifier}flowmarks_Event_{objectQualifier}Category] FOREIGN KEY ([CategoryID]) REFERENCES {databaseOwner}[{objectQualifier}flowmarks_Category] ([CategoryID]) ON DELETE CASCADE NOT FOR REPLICATION
+		ALTER TABLE {databaseOwner}[{objectQualifier}flowmarks_Event] WITH NOCHECK ADD CONSTRAINT [FK_{objectQualifier}flowmarks_Event_{objectQualifier}Modules] FOREIGN KEY ([ModuleID]) REFERENCES {databaseOwner}[{objectQualifier}Modules] ([ModuleID]) ON DELETE CASCADE
+		ALTER TABLE {databaseOwner}[{objectQualifier}flowmarks_Event] WITH NOCHECK ADD CONSTRAINT [FK_{objectQualifier}flowmarks_Event_{objectQualifier}Category] FOREIGN KEY ([CategoryID]) REFERENCES {databaseOwner}[{objectQualifier}flowmarks_Category] ([CategoryID]) ON DELETE CASCADE
 	END
 GO
 
