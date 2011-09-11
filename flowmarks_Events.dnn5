@@ -1,6 +1,6 @@
 <dotnetnuke type="Package" version="5.0">
     <packages>
-        <package name="Flowmarks Events" type="Module" version="01.00.01">
+        <package name="Flowmarks Events" type="Module" version="01.00.02">
             <friendlyName>Flowmarks Events</friendlyName>
             <description>Data entry tool for simple time series.</description>
             <owner>
@@ -35,7 +35,7 @@
                 &lt;/p&gt;
             </license>
 
-            <releaseNotes src="Flowmarks_Events_01.00.01_ReleaseNotes.htm" />
+            <releaseNotes src="Flowmarks_Events_01.00.02_ReleaseNotes.htm" />
             <dependencies>
                 <dependency type="CoreVersion">05.02.03</dependency>
             </dependencies>
@@ -44,6 +44,10 @@
                 <component type="Script">
                     <scripts>
                         <basePath>DesktopModules\flowmarks_Events</basePath>
+                        <script type="Install">
+                            <name>01.00.02.SqlDataProvider</name>
+                            <version>01.00.02</version>
+                        </script>
                         <script type="Install">
                             <name>01.00.01.SqlDataProvider</name>
                             <version>01.00.01</version>

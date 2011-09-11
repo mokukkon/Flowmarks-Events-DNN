@@ -9,6 +9,11 @@ table td, table th
     text-align: left;
 }
 
+.nowrap
+{
+    white-space: nowrap;
+}
+
 
 /* Navigation */
 .left

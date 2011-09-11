@@ -118,7 +118,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="01.00.00.SqlDataProvider" />
+    <None Include="01.00.01.SqlDataProvider" />
     <None Include="Build\build.bat" />
+    <None Include="01.00.02.SqlDataProvider" />
     <None Include="flowmarks_Events.dnn" />
     <None Include="flowmarks_Events.dnn5" />
     <None Include="Uninstall.SqlDataProvider" />
@@ -130,7 +132,7 @@
     <Content Include="App_LocalResources\ViewEvents.ascx.resx">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Flowmarks_Events_01.00.01_ReleaseNotes.htm" />
+    <Content Include="Flowmarks_Events_01.00.02_ReleaseNotes.htm" />
     <Content Include="Settings.ascx" />
     <Content Include="ViewEvents.ascx" />
   </ItemGroup>

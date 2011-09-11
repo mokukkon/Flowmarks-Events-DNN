@@ -14,18 +14,18 @@
             <col style="width: 200px;" />
             <col style="width: 100%; text-align: right;" />
             <tr>
-                <td class="left" nowrap>
-                    <asp:HyperLink ID="lnkEvents" runat="server" class="large" Text="Events" ToolTip="Edit events"></asp:HyperLink>
+                <td class="left nowrap">
+                    <asp:HyperLink ID="lnkEvents" runat="server" CssClass="large" Text="Events" ToolTip="Edit events"></asp:HyperLink>
                     |
-                    <asp:HyperLink ID="lnkSettings" runat="server" class="large selected" Text="Categories" ToolTip="Edit categories"></asp:HyperLink>
+                    <asp:HyperLink ID="lnkSettings" runat="server" CssClass="large selected" Text="Categories" ToolTip="Edit categories"></asp:HyperLink>
                     <asp:Literal ID="litReportSeparator" runat="server" Text=" | "></asp:Literal>
-                    <asp:HyperLink ID="lnkReport" runat="server" class="large" Text="Reports" ToolTip="View reports"></asp:HyperLink>
+                    <asp:HyperLink ID="lnkReport" runat="server" CssClass="large" Text="Reports" ToolTip="View reports"></asp:HyperLink>
                 </td>
                 <td class="center">
                     <div id="MessageBox" runat="server" class="MessageBox">
-                        <asp:Label ID="lblMessage" runat="server" class="large"></asp:Label>
+                        <asp:Label ID="lblMessage" runat="server" CssClass="large"></asp:Label>
                     </div>
-                    <asp:Label ID="litCurrentDateTime" runat="server" class="large" Visible="false"></asp:Label>
+                    <asp:Label ID="litCurrentDateTime" runat="server" CssClass="large" Visible="false"></asp:Label>
                 </td>
                 <td class="right">
                 </td>
@@ -35,7 +35,7 @@
 <%--            <p>
                 <asp:HyperLink ID="hlnkNewReport" runat="server" CssClass="cmdLink" Text="New category"></asp:HyperLink>
             </p>--%>
-            <dxwgv:ASPxGridView ID="gvCategorySettings" runat="server" AutoGenerateColumns="False" EnableTheming="false"
+            <dxwgv:ASPxGridView ID="gvCategorySettings" runat="server" AutoGenerateColumns="False"
                 Width="100%" KeyFieldName="CategoryId" SettingsPager-AllButton-Visible="true"
                 SettingsPager-PageSize="100" 
                 OnRowUpdating="gvCategorySettings_RowUpdating" 
@@ -47,44 +47,7 @@
  
                 </Header>
                 </Styles>
-                <Templates>
-                    <EditForm>
-                        <div style="padding: 4px 4px 3px 4px">
-                            <dxtc:ASPxPageControl runat="server" ID="pageControl" Width="100%">
-                                <TabPages>
-                                    <dxtc:TabPage Text="Category" Visible="true">
-                                        <ContentCollection>
-                                            <dxw:ContentControl runat="server">
-                                                <dxwgv:ASPxGridViewTemplateReplacement ID="Editors" ReplacementType="EditFormEditors"
-                                                    runat="server">
-                                                </dxwgv:ASPxGridViewTemplateReplacement>
-                                            </dxw:ContentControl>
-                                        </ContentCollection>
-                                    </dxtc:TabPage>
-                                    <dxtc:TabPage Text="Labels" Visible='False'>
-                                        <ContentCollection>
-                                            <dxw:ContentControl runat="server">
-                                                <dxe:ASPxLabel runat="server" ID="nameLabel" Text="Name">
-                                                </dxe:ASPxLabel>
-                                                <dxe:ASPxTextBox runat="server" ID="nameLabelEditor" Text='<%# Eval("Label_Label")%>'
-                                                    NullText="Label for event name, e.g. 'Course Name'">
-                                                </dxe:ASPxTextBox>
-                                            </dxw:ContentControl>
-                                        </ContentCollection>
-                                    </dxtc:TabPage>
-                                </TabPages>
-                            </dxtc:ASPxPageControl>
-                        </div>
-                        <div style="text-align: right; padding: 2px 2px 2px 2px">
-                            <dxwgv:ASPxGridViewTemplateReplacement ID="UpdateButton" ReplacementType="EditFormUpdateButton" 
-                                runat="server">
-                            </dxwgv:ASPxGridViewTemplateReplacement>
-                            <dxwgv:ASPxGridViewTemplateReplacement ID="CancelButton" ReplacementType="EditFormCancelButton"
-                                runat="server">
-                            </dxwgv:ASPxGridViewTemplateReplacement>
-                        </div>
-                    </EditForm>
-                </Templates>
+
                 <Columns>
                     <dxwgv:GridViewDataTextColumn EditFormSettings-VisibleIndex="1" EditFormSettings-CaptionLocation="Top"
                         Name="Name" FieldName="Name" Caption="Category Name" PropertiesTextEdit-NullText="e.g. 'Computer Science courses'" />
@@ -119,7 +82,7 @@
                         PropertiesDateEdit-DisplayFormatString="dd.MM.yyyy HH:mm" />
                     <dxwgv:GridViewDataMemoColumn EditFormSettings-CaptionLocation="Top" Name="Comments"
                         FieldName="Comments" Caption="Comments" Visible="false">
-                        <EditFormSettings RowSpan="4" Visible="True" VisibleIndex="100" />
+                        <EditFormSettings RowSpan="4" Visible="false" VisibleIndex="100" />
                     </dxwgv:GridViewDataMemoColumn>
                     <dxwgv:GridViewDataCheckColumn EditFormSettings-VisibleIndex="1" EditCellStyle-VerticalAlign="Bottom"
                         EditFormCaptionStyle-VerticalAlign="Bottom" PropertiesCheckEdit-Style-VerticalAlign="Bottom"
@@ -129,8 +92,6 @@
                         Name="ParentId" FieldName="ParentId" Caption="Top Category">
                         <PropertiesComboBox TextField="Name" ValueField="CategoryID" EnableSynchronization="False"
                             DataSourceID="dsRootCategories">
-                            <ClientSideEvents SelectedIndexChanged="function(s, e) { OnCountryChanged(s); }">
-                            </ClientSideEvents>
                         </PropertiesComboBox>
                     </dxwgv:GridViewDataComboBoxColumn>
                     <dxwgv:GridViewCommandColumn Caption="&nbsp;">

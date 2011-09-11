@@ -50,6 +50,40 @@ AND e.IsDeleted = 0
 ORDER BY EventDate DESC	
 GO
 
+ALTER procedure {databaseOwner}{objectQualifier}flowmarks_UpdateEvent
+
+    @EventId        int,
+    @ModuleId       int,
+    @UserId         int,
+	@CategoryID     int,
+	@Label			nvarchar(200),
+	@Label2         nvarchar(200),
+	@EventDate      datetime2(7),
+	@EventDate2     datetime2(7),
+	@Measurement    float,
+	@Measurement2   float,
+	@ExternalId     varchar(50),	
+	@Comments		ntext,
+    @DateModified   datetime2(7)
+
+as
+
+update {objectQualifier}flowmarks_Event
+set     Label		    = @Label,
+		Label2          = ISNULL(@Label2, Label2),
+		CategoryID	    = @CategoryID,
+		EventDate	    = @EventDate,
+		EventDate2	    = @EventDate2,
+		Measurement	    = @Measurement,
+		Measurement2    = @Measurement2,
+		ExternalId	    = ISNULL(@ExternalId, Measurement2),
+		Comments	    = @Comments,
+		DateModified    = @DateModified
+where  UserID = @UserId
+	and    EventId = @EventId
+
+GO
+
 
 /************************************************************/
 /*****              SqlDataProvider                     *****/

@@ -214,6 +214,38 @@ namespace flowmarks.Modules.Events
             }
         }
 
+
+        /// <summary>
+        /// Gets the user time zone from DNN profile As .NET TimeZoneInfo.
+        /// </summary>
+        public TimeZoneInfo UserTimeZone
+        {
+            get
+            {
+                TimeZoneInfo result = TimeZoneInfo.Utc;
+                if (UserInfo.Profile.TimeZone != 0)
+                {
+                    foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
+                    {
+                        // DNN6 Preferred TimeZone
+                        Type type = UserInfo.Profile.GetType();
+                        bool exists = type.GetProperties().Where(p => p.Name.Equals("PreferredTimeZone")).Any();
+                        if (exists)
+                        {
+                            result = (TimeZoneInfo)UserInfo.Profile.GetType().GetProperty("PreferredTimeZone").GetValue(UserInfo.Profile, null);
+
+                        }
+                       else //Legacy DNN5 TimeZone
+                        {
+                            if (tz.BaseUtcOffset.TotalMinutes == UserInfo.Profile.TimeZone && tz.SupportsDaylightSavingTime)
+                                result = tz;
+                        }
+                    }
+                }
+                return result;
+            }
+        }
+
         #endregion
 
         #region Private Members
@@ -287,7 +319,7 @@ namespace flowmarks.Modules.Events
             object reportsToNewWindowSetting = Settings["fm_Events_ReportsToNewWindow"];
 
             lnkEvents.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(this.TabId, "", "&mid=" + this.ModuleId + SkinSrc + ConSrc);
-            litCurrentDateTime.Text = DateTime.Now.ToString(DateTimeFormat);
+            litCurrentDateTime.Text = ConvertFromUtcToUserTimeZone(DateTime.UtcNow).ToString(DateTimeFormat);
             lnkSettings.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(this.TabId, "UserSettings", "&mid=" + this.ModuleId + SkinSrc + ConSrc);
 
             if (reportsUrl != null && !String.IsNullOrEmpty(reportsUrl.ToString()))
@@ -451,7 +483,6 @@ namespace flowmarks.Modules.Events
 
                     CategoryController objCategories = new CategoryController();
                     List<CategoryInfo> categories;
-
                     //get the content from the Event table
                     categories = objCategories.GetCategories(UserId, NoCategoryId, false);
 
@@ -475,7 +506,7 @@ namespace flowmarks.Modules.Events
                     RefreshLabels(e.Item, null);
                 }
                 TextBox dateEventDate = (TextBox)e.Item.FindControl("dateEventDate");
-                dateEventDate.Text = DateTime.Now.ToString(DateTimeFormat);
+                dateEventDate.Text = Convert.ToString(ConvertFromUtcToUserTimeZone(DateTime.UtcNow).ToString(DateTimeFormat));
 
                 SetRegexValidators(e.Item);
 
@@ -534,7 +565,7 @@ namespace flowmarks.Modules.Events
             EventInfo oInfo = new EventInfo();
             oInfo.ModuleId = ModuleId;
             oInfo.UserId = UserId;
-            oInfo.EventDate = DateTime.Now.ToUniversalTime();
+            oInfo.EventDate = DateTime.UtcNow;
             oInfo.CategoryId = int.Parse(ddlFilterCategory.SelectedValue);
             oInfo.Label = "";
 
@@ -650,7 +681,7 @@ namespace flowmarks.Modules.Events
                 rootCategory = ddlFilterCategory.SelectedItem.Text;
 
             String currentHeader;
-            if (eventDate > DateTime.Now)
+            if (eventDate > ConvertFromUtcToUserTimeZone(DateTime.UtcNow))
             {
                 currentHeader = Localization.GetString("FutureEventsHeader", LocalResourceFile);
                 if (String.IsNullOrEmpty(currentHeader)) currentHeader = "Future Events";
@@ -727,9 +758,9 @@ namespace flowmarks.Modules.Events
                 string oLabel = Convert.ToString(DataBinder.Eval(dataItem, "Label"));
 
                 DateTime eventDate = Convert.ToDateTime(DataBinder.Eval(dataItem, "EventDate"));
-                DateTime convertedDate = DateTime.SpecifyKind(eventDate, DateTimeKind.Utc);
                 string oTimeSpan = formatRelativeTime(eventDate);
-                string oEventDate = Convert.ToString(convertedDate.ToLocalTime().ToString(DateTimeFormat));
+
+                string oEventDate = ConvertFromUtcToUserTimeZone(eventDate).ToString(DateTimeFormat);
 
                 string oMeasurement = Convert.ToString(DataBinder.Eval(dataItem, "Measurement"));
                 string oCategory = Convert.ToString(DataBinder.Eval(dataItem, "Category"));
@@ -809,8 +840,7 @@ namespace flowmarks.Modules.Events
                     throw new Exception(String.Format("Invalid Date. Required format {0}", Server.HtmlEncode(DateTimeFormat)));
                 }
 
-            DateTime convertedDate = DateTime.SpecifyKind(parsedDate, DateTimeKind.Local);
-            oInfo.EventDate = convertedDate.ToUniversalTime();
+            oInfo.EventDate = ConvertFromUserTimeZoneToUtc(parsedDate);
 
             DateTime? parsedDate2;
             if (String.IsNullOrEmpty(dateEventDate2.Text))
@@ -825,9 +855,7 @@ namespace flowmarks.Modules.Events
                 if (!DateTime.TryParseExact(dateEventDate2.Text, DateTimeFormat, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out tempDate))
                     if (!DateTime.TryParse(dateEventDate2.Text, out tempDate))
                         throw new Exception(String.Format("Invalid 2nd Date. Required format {0}", Server.HtmlEncode(DateTimeFormat)));
-
-                DateTime convertedDate2 = DateTime.SpecifyKind(tempDate, DateTimeKind.Local);
-                parsedDate2 = convertedDate2.ToUniversalTime();
+                parsedDate2 = ConvertFromUserTimeZoneToUtc(tempDate);
             }
 
             oInfo.EventDate2 = parsedDate2;
@@ -904,7 +932,7 @@ namespace flowmarks.Modules.Events
                         ClearInputFields(insertItem);
 
                         if (string.IsNullOrEmpty(oInfo.Label))
-                            ShowInfo(String.Format("Event at {0} saved.", oInfo.EventDate.ToLocalTime().ToString(DateTimeFormat)));
+                            ShowInfo(String.Format("Event at {0} saved.", ConvertFromUtcToUserTimeZone(oInfo.EventDate).ToString(DateTimeFormat)));
                         else
                             ShowInfo(String.Format("'{0}' saved.", oInfo.Label));
 
@@ -953,7 +981,7 @@ namespace flowmarks.Modules.Events
                         EventController oController = new EventController();
                         oController.UpdateEvent(oInfo);
                         if (string.IsNullOrEmpty(oInfo.Label))
-                            ShowInfo(String.Format("Event at {0} saved.", oInfo.EventDate.ToLocalTime().ToString(DateTimeFormat)));
+                            ShowInfo(String.Format("Event at {0} saved.", ConvertFromUtcToUserTimeZone(oInfo.EventDate).ToString(DateTimeFormat)));
                         else
                             ShowInfo(String.Format("'{0}' saved.", oInfo.Label));
 
@@ -1064,7 +1092,7 @@ namespace flowmarks.Modules.Events
                     if (!string.IsNullOrEmpty(oInfo.Label))
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_Label, "lblLabel").PadRight(labelwidth), oInfo.Label);
 
-                    sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_EventDate, "lblEventDate").PadRight(labelwidth), oInfo.EventDate.ToLocalTime().ToString(DateTimeFormat));
+                    sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_EventDate, "lblEventDate").PadRight(labelwidth), ConvertFromUtcToUserTimeZone(oInfo.EventDate).ToString(DateTimeFormat));
 
                     sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_Category, "lblCategory").PadRight(labelwidth), oInfo.Category);
 
@@ -1072,7 +1100,7 @@ namespace flowmarks.Modules.Events
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_Label2, "lblLabel2").PadRight(labelwidth), oInfo.Label2);
 
                     if (oInfo.EventDate2 != null)
-                        sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_EventDate2, "lblEventDate2").PadRight(labelwidth), oInfo.EventDate2.Value.ToLocalTime().ToString(DateTimeFormat));
+                        sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_EventDate2, "lblEventDate2").PadRight(labelwidth), ConvertFromUtcToUserTimeZone(oInfo.EventDate2.Value).ToString(DateTimeFormat));
 
                     if (oInfo.Measurement != null)
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_Measurement, "lblMeasurement").PadRight(labelwidth), oInfo.Measurement);
@@ -1086,7 +1114,7 @@ namespace flowmarks.Modules.Events
                     if (!string.IsNullOrEmpty(oInfo.ExternalId))
                         sb.AppendFormat("{0}: {1}" + Environment.NewLine, GetLabel(oInfo.Label_ExternalId, "lblExternalId").PadRight(labelwidth), oInfo.ExternalId);
 
-                    sb.AppendFormat("{0}: {1}" + Environment.NewLine, "Edited", GetLastDate(oInfo.DateCreated, oInfo.DateModified).ToString(DateTimeFormat));
+                    sb.AppendFormat("{0}: {1}" + Environment.NewLine, "Edited", ConvertFromUtcToUserTimeZone(GetLastDate(oInfo.DateCreated, oInfo.DateModified)).ToString(DateTimeFormat));
                 }
                 catch (Exception ex)
                 {
@@ -1128,16 +1156,25 @@ namespace flowmarks.Modules.Events
 
 
         /// <summary>
-        /// Converts to local time.
+        /// Converts from UTC to user time zone.
         /// </summary>
         /// <param name="eventDate">The event date.</param>
         /// <returns></returns>
-        public DateTime ConvertToLocalTime(Object eventDate)
+        public DateTime ConvertFromUtcToUserTimeZone(Object eventDate)
         {
             var dt = (DateTime)eventDate;
-            DateTime convertedDate = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+            return Utils.ConvertFromUtcToTimeZone(dt, UserTimeZone);
+        }
 
-            return convertedDate.ToLocalTime();
+        /// <summary>
+        /// Converts from user time zone to UTC.
+        /// </summary>
+        /// <param name="eventDate">The event date.</param>
+        /// <returns></returns>
+        public DateTime ConvertFromUserTimeZoneToUtc(Object eventDate)
+        {
+            var dt = (DateTime)eventDate;
+            return Utils.ConvertFromTimeZoneToUtc(dt, UserTimeZone);
         }
 
         /// <summary>
@@ -1148,10 +1185,10 @@ namespace flowmarks.Modules.Events
         public string formatTimeSpan(DateTime eventDate)
         {
             TimeSpan ts;
-            if (eventDate > DateTime.Now)
-                ts = eventDate - DateTime.Now;
+            if (eventDate > DateTime.UtcNow)
+                ts = eventDate - DateTime.UtcNow;
             else
-                ts = DateTime.Now - eventDate;
+                ts = DateTime.UtcNow - eventDate;
 
             string result = "";
 

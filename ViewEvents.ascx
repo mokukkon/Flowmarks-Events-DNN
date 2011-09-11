@@ -508,7 +508,7 @@
                                 </td>
                                 <td class="tdField">
                                     <asp:TextBox ID="dateEventDate" CssClass="dateEventDate fmTextBox" runat="server"
-                                        Text='<% # ConvertToLocalTime(Eval("EventDate")).ToString(DateTimeFormat)%>' />
+                                        Text='<% # ConvertFromUtcToUserTimeZone(Eval("EventDate")).ToString(DateTimeFormat)%>' />
                                     <div id="cmdEventDate2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
                                         <a href="#2ndDate" title="Another date...">+</a>
                                     </div>
@@ -527,7 +527,7 @@
                                 </td>
                                 <td class="tdField">
                                     <asp:TextBox ID="dateEventDate2" CssClass="dateEventDate2 fmTextBox" runat="server"
-                                        Text='<% # Eval("EventDate2") != null ? ConvertToLocalTime(Eval("EventDate2")).ToString(DateTimeFormat) : "" %>' />
+                                        Text='<% # Eval("EventDate2") != null ? ConvertFromUtcToUserTimeZone(Eval("EventDate2")).ToString(DateTimeFormat) : "" %>' />
                                     <div id="cmdHideEventDate2" class="ui-state-default ui-state-active ui-corner-all fmImageButton">
                                         <div class="ui-icon ui-icon-circle-minus">
                                             <a href="#hide" title="Hide">-</a>
@@ -624,7 +624,7 @@
                                         <a href="#2ndIdentifier" title="Another ID...">+</a>
                                     </div>
                                     <div style="float: right; font-size: 11px; font-style: italic; margin-right: 50px;">
-                                        <asp:Label ID="lblDateLastModified" runat="server" ToolTip='<% # GetLastDate(Eval("DateCreated"),Eval("DateModified")).ToString(DateTimeFormat) %>'
+                                        <asp:Label ID="lblDateLastModified" runat="server" ToolTip='<% # ConvertFromUtcToUserTimeZone(GetLastDate(Eval("DateCreated"),Eval("DateModified"))).ToString(DateTimeFormat) %>'
                                             Text='<% # "edited " + formatTimeSpan(GetLastDate(Eval("DateCreated"),Eval("DateModified"))) + " ago"%>'>
                                         </asp:Label>
                                     </div>

@@ -109,6 +109,37 @@ namespace flowmarks.Modules.Events
             }
         }
 
+        /// <summary>
+        /// Gets the user time zone from DNN profile As .NET TimeZoneInfo.
+        /// </summary>
+        public TimeZoneInfo UserTimeZone
+        {
+            get
+            {
+                TimeZoneInfo result = TimeZoneInfo.Utc;
+                if (UserInfo.Profile.TimeZone != 0)
+                {
+                    foreach (TimeZoneInfo tz in TimeZoneInfo.GetSystemTimeZones())
+                    {
+                        // DNN6 Preferred TimeZone
+                        Type type = UserInfo.Profile.GetType();
+                        bool exists = type.GetProperties().Where(p => p.Name.Equals("PreferredTimeZone")).Any();
+                        if (exists)
+                        {
+                            result = (TimeZoneInfo)UserInfo.Profile.GetType().GetProperty("PreferredTimeZone").GetValue(UserInfo.Profile, null);
+
+                        }
+                        else //Legacy DNN5 TimeZone
+                        {
+                            if (tz.BaseUtcOffset.TotalMinutes == UserInfo.Profile.TimeZone && tz.SupportsDaylightSavingTime)
+                                result = tz;
+                        }
+                    }
+                }
+                return result;
+            }
+        }
+
         #endregion
 
         private void Page_Init(object sender, System.EventArgs e)
@@ -134,20 +165,31 @@ namespace flowmarks.Modules.Events
                 //Configure display
                 ConfigureDisplay();
 
-                CategoryController objCategories = new CategoryController();
-                List<CategoryInfo> categories;
-
-                //get the content from the Event table
-                categories = objCategories.GetCategories(UserId, NoCategoryId, null);
-                gvCategorySettings.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);
+                if (!IsPostBack)
+                {
+                gvCategorySettings.DataSource = GetCategories(UserId, NoCategoryId, null);
                 gvCategorySettings.DataBind();
 
                 dsRootCategories.SelectParameters["UserID"].DefaultValue = Convert.ToString(UserId);
+                }
             }
             catch (Exception ex)
             {
                 Exceptions.ProcessModuleLoadException(this, ex);
             }
+        }
+
+        private List<CategoryInfo> GetCategories(int UserId, int NoCategoryid, bool? isHidden)
+        {
+            CategoryController objCategories = new CategoryController();
+            List<CategoryInfo> categories = objCategories.GetCategories(UserId, NoCategoryId, isHidden);
+            foreach (CategoryInfo c  in categories)
+            {
+                c.DateCreated = c.DateCreated > DateTime.MinValue ? ConvertFromUtcToUserTimeZone(c.DateCreated) : DateTime.MinValue;
+                c.DateModified = c.DateModified > DateTime.MinValue ? ConvertFromUtcToUserTimeZone(c.DateModified) : DateTime.MinValue;
+            }
+            return categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId).ToList();
+
         }
 
         /// <summary>
@@ -160,7 +202,7 @@ namespace flowmarks.Modules.Events
             object reportsToNewWindowSetting = Settings["fm_Events_ReportsToNewWindow"];
 
             lnkEvents.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(this.TabId, "", "&mid=" + this.ModuleId + SkinSrc + ConSrc);
-            litCurrentDateTime.Text = DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+            litCurrentDateTime.Text = ConvertFromUtcToUserTimeZone(DateTime.UtcNow).ToString("dd.MM.yyyy HH:mm");
             lnkSettings.NavigateUrl = DotNetNuke.Common.Globals.NavigateURL(this.TabId, "UserSettings", "&mid=" + this.ModuleId + SkinSrc + ConSrc);
 
             if (reportsUrl != null && !String.IsNullOrEmpty(reportsUrl.ToString()))
@@ -210,10 +252,8 @@ namespace flowmarks.Modules.Events
 
                 objCategories.UpdateCategory(category);
 
-                List<CategoryInfo> categories;
-                categories = objCategories.GetCategories(UserId, NoCategoryId, null);
                 ASPxGridView gv = (ASPxGridView)sender;
-                gv.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);
+                gv.DataSource = GetCategories(UserId, NoCategoryId, null);
                 gv.DataBind();
 
                 gv.CancelEdit();
@@ -254,11 +294,9 @@ namespace flowmarks.Modules.Events
                         ShowInfo(string.Format("Deleted: {0}", e.Values["Name"]));
                     }
 
-                    List<CategoryInfo> categories;
-                    categories = objCategories.GetCategories(UserId, NoCategoryId, null);
                     ASPxGridView gv = (ASPxGridView)sender;
 
-                    gv.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);
+                    gv.DataSource = GetCategories(UserId, NoCategoryId, null);
                     gv.DataBind();
                     gv.CancelEdit();
                     e.Cancel = true;
@@ -294,11 +332,8 @@ namespace flowmarks.Modules.Events
 
                 objCategories.AddCategory(category);
 
-                List<CategoryInfo> categories;
-                categories = objCategories.GetCategories(UserId, NoCategoryId, null);
                 ASPxGridView gv = (ASPxGridView)sender;
-
-                gv.DataSource = categories.OrderBy(a => a.ParentId).ThenBy(a => a.CategoryId);
+                gv.DataSource = GetCategories(UserId, NoCategoryId, null);
                 gv.DataBind();
                 gv.CancelEdit();
                 e.Cancel = true;
@@ -308,7 +343,7 @@ namespace flowmarks.Modules.Events
         private CategoryInfo ReadCategory(OrderedDictionary keys, OrderedDictionary values)
         {
             CategoryInfo category = new CategoryInfo();
-            category.DateModified = DateTime.Now;
+            category.DateModified = DateTime.UtcNow;
 
             category.CategoryId = (int)keys["CategoryId"];
             category.Name = (string)values["Name"];
@@ -332,7 +367,7 @@ namespace flowmarks.Modules.Events
         private CategoryInfo ReadCategory(OrderedDictionary values)
         {
             CategoryInfo category = new CategoryInfo();
-            category.DateCreated = DateTime.Now;
+            category.DateCreated = DateTime.UtcNow;
 
             category.Name = (string)values["Name"];
             category.ParentId = (int?)values["ParentId"];
@@ -372,6 +407,29 @@ namespace flowmarks.Modules.Events
         public void ShowInfo(string message)
         {
             Utils.ShowInfo(message, MessageBox, lblMessage);
+        }
+
+
+        /// <summary>
+        /// Converts from UTC to user time zone.
+        /// </summary>
+        /// <param name="eventDate">The event date.</param>
+        /// <returns></returns>
+        public DateTime ConvertFromUtcToUserTimeZone(Object eventDate)
+        {
+            var dt = (DateTime)eventDate;
+            return Utils.ConvertFromUtcToTimeZone(dt, UserTimeZone);
+        }
+
+        /// <summary>
+        /// Converts from user time zone to UTC.
+        /// </summary>
+        /// <param name="eventDate">The event date.</param>
+        /// <returns></returns>
+        public DateTime ConvertFromUserTimeZoneToUtc(Object eventDate)
+        {
+            var dt = (DateTime)eventDate;
+            return Utils.ConvertFromTimeZoneToUtc(dt, UserTimeZone);
         }
 
 

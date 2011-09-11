@@ -95,5 +95,31 @@ namespace flowmarks.Modules.Events.Components
 
             return url;
         }
+
+        /// <summary>
+        /// Converts from UTC to specified time zone.
+        /// </summary>
+        /// <param name="dt">The dt.</param>
+        /// <param name="tz">The tz.</param>
+        /// <returns></returns>
+        public static DateTime ConvertFromUtcToTimeZone(DateTime dt, TimeZoneInfo tz)
+        {
+            DateTime convertedDate = DateTime.SpecifyKind(dt, DateTimeKind.Utc);
+            convertedDate = TimeZoneInfo.ConvertTimeFromUtc(convertedDate, tz);
+            return convertedDate;
+        }
+
+        /// <summary>
+        /// Converts from specified time zone to UTC.
+        /// </summary>
+        /// <param name="dt">The dt.</param>
+        /// <param name="tz">The tz.</param>
+        /// <returns></returns>
+        public static DateTime ConvertFromTimeZoneToUtc(DateTime dt, TimeZoneInfo tz)
+        {
+            DateTime convertedDate = DateTime.SpecifyKind(dt, DateTimeKind.Unspecified);
+            convertedDate = TimeZoneInfo.ConvertTimeToUtc(convertedDate, tz);
+            return convertedDate;
+        }
     }
 }
