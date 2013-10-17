@@ -1,0 +1,202 @@
+﻿/************************************************************/
+/*****              SqlDataProvider                     *****/
+/*****                                                  *****/
+/*****                                                  *****/
+/***** Note: To manually execute this script you must   *****/
+/*****       perform a search and replace operation     *****/
+/*****       for {databaseOwner} and {objectQualifier}  *****/
+/*****                                                  *****/
+/************************************************************/
+
+/* Added support for Module Isolation */
+
+ALTER procedure {databaseOwner}{objectQualifier}flowmarks_AddEvent
+
+	@ModuleId       int,
+	@UserID         int,
+	@CategoryID     int,
+	@Label			nvarchar(200),
+	@Label2         nvarchar(200),
+	@EventDate      datetime2(7),
+	@EventDate2     datetime2(7),
+	@Measurement    float,
+	@Measurement2   float,
+	@ExternalId     varchar(50),	
+	@Comments		ntext
+
+as
+
+insert into {objectQualifier}flowmarks_Event (
+	[ModuleID]
+      ,[UserID]
+      ,[CategoryID]
+      ,[Label]
+      ,[Label2]
+      ,[EventDate]
+      ,[EventDate2]
+      ,[Measurement]
+      ,[Measurement2]
+      ,[ExternalId]
+      ,[Comments]
+      ,[DateCreated]
+      ,[DateModified]
+      ,[IsDeleted]
+) 
+values (
+	@ModuleId,
+	@UserID,
+	@CategoryID,
+	@Label,
+	@Label2,
+	@EventDate,
+	@EventDate2,
+	@Measurement,
+	@Measurement2,
+	@ExternalId,
+	@Comments,
+	GETUTCDATE(),
+	NULL,
+	0
+)
+
+GO
+
+ALTER procedure {databaseOwner}{objectQualifier}flowmarks_UpdateEvent
+
+    @EventId        int,
+    @ModuleId       int,
+    @UserId         int,
+	@CategoryID     int,
+	@Label			nvarchar(200),
+	@Label2         nvarchar(200),
+	@EventDate      datetime2(7),
+	@EventDate2     datetime2(7),
+	@Measurement    float,
+	@Measurement2   float,
+	@ExternalId     varchar(50),	
+	@Comments		ntext
+
+as
+
+update {objectQualifier}flowmarks_Event
+set     Label		    = @Label,
+		Label2          = ISNULL(@Label2, Label2),
+		CategoryID	    = @CategoryID,
+		EventDate	    = @EventDate,
+		EventDate2	    = @EventDate2,
+		Measurement	    = @Measurement,
+		Measurement2    = @Measurement2,
+		ExternalId	    = ISNULL(@ExternalId, Measurement2),
+		Comments	    = @Comments,
+		DateModified    = GETUTCDATE()
+where  UserID = @UserId
+	and    EventId = @EventId
+
+GO
+
+ALTER procedure {databaseOwner}[{objectQualifier}flowmarks_UpdateCategory]
+
+    @CategoryID     int,
+    @UserId			int,
+	@ParentID		int,
+	@Name			nvarchar(200),
+	@Comments		ntext,
+	@Label_Category nvarchar(200),
+	@Label_Label     nvarchar(200),
+	@Label_Label2   nvarchar(200),
+	@Label_EventDate      nvarchar(200),
+	@Label_EventDate2     nvarchar(200),
+	@Label_Measurement    nvarchar(200),
+	@Label_Measurement2   nvarchar(200),
+	@Label_ExternalId     nvarchar(200),
+	@Label_Comments       nvarchar(200),
+	@IsHidden bit
+
+as
+
+update {objectQualifier}flowmarks_Category
+set    Name			= @Name,
+		ParentID	= @ParentID,
+		Label_Category	= ISNULL(@Label_Category,Label_Category),
+		Label_Label	    = ISNULL(@Label_Label,Label_Label),
+		Label_Label2	= ISNULL(@Label_Label2, Label_Label2),
+		Label_EventDate	= ISNULL(@Label_EventDate,Label_EventDate),
+		Label_EventDate2	= ISNULL(@Label_EventDate2,Label_EventDate2),
+		Label_Measurement	= ISNULL(@Label_Measurement,Label_Measurement),
+		Label_Measurement2	= ISNULL(@Label_Measurement2, Label_Measurement2),
+		Label_ExternalId	= ISNULL(@Label_ExternalId, Label_Measurement2),
+		Label_Comments	= ISNULL(@Label_Comments, Label_Comments),
+		Comments	    = @Comments,
+		DateModified    = GETUTCDATE(),
+		IsHidden        = @IsHidden
+where  
+        CategoryID = @CategoryID	
+	    and UserID = @UserId
+
+GO
+
+ALTER procedure {databaseOwner}[{objectQualifier}flowmarks_AddCategory]
+
+    @UserId			int,
+	@ParentID		int,
+	@Name			nvarchar(200),
+	@Comments		ntext,
+	@Label_Category       nvarchar(200),
+	@Label_Label           nvarchar(200),
+	@Label_Label2         nvarchar(200),
+	@Label_EventDate      nvarchar(200),
+	@Label_EventDate2     nvarchar(200),
+	@Label_Measurement    nvarchar(200),
+	@Label_Measurement2   nvarchar(200),
+	@Label_ExternalId     nvarchar(200),
+	@Label_Comments       nvarchar(200),
+	@IsHidden bit
+
+
+as
+
+insert into {objectQualifier}flowmarks_Category (
+	[UserID]
+	,[ParentID]
+	,[Name]
+	,[Comments]
+	,[DateCreated]
+	,[DateModified]
+	,[IsDeleted]
+	,[IsHidden]
+	,[Label_Category]
+	,[Label_Label]
+	,[Label_Label2]
+	,[Label_EventDate]
+	,[Label_EventDate2]
+	,[Label_Measurement]
+	,[Label_Measurement2]
+	,[Label_ExternalId]
+	,[Label_Comments]
+) 
+values (
+	@UserID,
+	@ParentID,
+	@Name,
+	@Comments,
+	GETUTCDATE(),
+	NULL,
+	0,
+	@IsHidden,
+	@Label_Category,
+	@Label_Label,
+	@Label_Label2,
+	@Label_EventDate,
+	@Label_EventDate2,
+	@Label_Measurement,
+	@Label_Measurement2,
+	@Label_ExternalId,
+	@Label_Comments
+)
+
+GO
+
+
+/************************************************************/
+/*****              SqlDataProvider                     *****/
+/************************************************************/

@@ -5,12 +5,14 @@
 <%@ Register TagPrefix="dnn" TagName="SectionHead" Src="~/controls/SectionHeadControl.ascx" %>
 <%@ Register Assembly="System.Web.Extensions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35"
     Namespace="System.Web.UI.WebControls" TagPrefix="asp" %>
+<%@ Register TagPrefix="dnn" Namespace="DotNetNuke.Web.Client.ClientResourceManagement" Assembly="DotNetNuke.Web.Client" %>
+<dnn:DnnJsInclude runat="server" FilePath="~/DesktopModules/flowmarks_Events/jquery-ui-timepicker-addon.min.js"/>
+<dnn:DnnCssInclude runat="server" FilePath="/DesktopModules/flowmarks_Events/jquery-ui-1.9.2.custom.min.css"></dnn:DnnCssInclude>
 
-<script type="text/javascript" src="/DesktopModules/flowmarks_Events/jquery-1.4.2.min.js"></script>
-
-<script type="text/javascript" src="/DesktopModules/flowmarks_Events/jquery-ui-1.8.custom.min.js"></script>
-
-<script type="text/javascript" src="/DesktopModules/flowmarks_Events/jquery-ui-timepicker-addon.js"></script>
+<%  if (false) { %>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="jquery-vsdoc.js"></script>
+<%  } %>
 
 <script type="text/javascript" charset="utf-8">
     jQuery(function() {
@@ -50,14 +52,16 @@
 
         $(".dateEventDate").datetimepicker({
             dateFormat: '<% =DateFormat.ToLower().Replace("yyyy", "yy") %>',
-            timeFormat: '<% =TimeFormat.ToLower() %>',
-            minuteGrid: 10
+            timeFormat: '<% =TimeFormat %>',
+            minuteGrid: 15,
+            stepMinute: 15
         });
 
         $(".dateEventDate2").datetimepicker({
             dateFormat: '<% =DateFormat.ToLower().Replace("yyyy", "yy") %>',
-            timeFormat: '<% =TimeFormat.ToLower() %>',
-            minuteGrid: 10
+            timeFormat: '<% =TimeFormat %>',
+            minuteGrid: 15,
+            stepMinute: 15
         });
 
         $(".edit").hide().fadeIn();
@@ -312,7 +316,7 @@
                                 <td class="tdField">
                                     <asp:TextBox ID="dateEventDate" CssClass="dateEventDate fmTextBox" runat="server"/>
                                     <div id="cmdEventDate2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
-                                        <a href="#2ndDate" title="Another date...">+</a>
+                                        <a href="#2ndDate" title="Add date">+</a>
                                     </div>
                                     <asp:RequiredFieldValidator ID="valdateEventDateReq" runat="server" ControlToValidate="dateEventDate"
                                         ErrorMessage="Required" CssClass="red" Width="0" ValidationGroup="ICGEvent"></asp:RequiredFieldValidator>
@@ -346,7 +350,7 @@
                                 <td class="tdField">
                                     <asp:TextBox ID="txtLabel" runat="server" CssClass="fmTextBox" MaxLength="200" Width="300px" />
                                     <div id="cmdLabel2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
-                                        <a href="#2ndLabel" title="Another label...">+</a>
+                                        <a href="#2ndLabel" title="Add label">+</a>
                                     </div>
                                 </td>
                             </tr>
@@ -374,7 +378,7 @@
                                     <asp:TextBox ID="txtMeasurement" runat="server" CssClass="fmTextBox" MaxLength="255"
                                         Placeholder="Number, e.g. 47"></asp:TextBox>
                                     <div id="cmdMeasurement2" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
-                                        <a href="#2ndMeasurement" title="Another measurement...">+</a>
+                                        <a href="#2ndMeasurement" title="Add measurement">+</a>
                                     </div>
                                     <asp:RegularExpressionValidator ID="valMeasurementValid" runat="server" ControlToValidate="txtMeasurement"
                                         Text="Number required" CssClass="red" ValidationExpression="^(\d|-)?(\d|,)*\.?\d*$" ValidationGroup="ICGEvent"></asp:RegularExpressionValidator>
@@ -416,7 +420,7 @@
                                 <td class="tdField">
                                     <asp:Label ID="lblEventIdValue" runat="server"></asp:Label>
                                     <div id="cmdExternalId" class="ui-state-default ui-corner-all ui-icon ui-icon-circle-plus fmImageButton">
-                                        <a href="#2ndIdentifier" title="Another ID...">+</a>
+                                        <a href="#2ndIdentifier" title="Add ID">+</a>
                                     </div>
                                     <div style="float: right; font-size: 11px; font-style: italic; margin-right: 50px;">
                                         <asp:Label ID="lblDateLastModified" runat="server">
@@ -722,4 +726,3 @@
         </SelectParameters>
     </asp:SqlDataSource>
 </div>
-<link rel="stylesheet" media="all" type="text/css" href="/DesktopModules/flowmarks_Events/jquery-ui-1.8.5.custom.css" />

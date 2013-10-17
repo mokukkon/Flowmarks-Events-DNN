@@ -1,9 +1,9 @@
 @ECHO off
 ECHO %1 Passed command is the debug/release flag
 ECHO Declare paths needed, package path is cleaned at start
-set project= "C:\inetpub\wwwroot\DotNetNuke\DesktopModules\flowmarks_Events"
-set package= "C:\inetpub\wwwroot\DotNetNuke\DesktopModules\flowmarks_Events\flowmarks_Events_Install"
-set resources= "C:\inetpub\wwwroot\DotNetNuke\DesktopModules\flowmarks_Events\flowmarks_Events_Install\resources"
+set project= "..\DesktopModules\flowmarks_Events"
+set package= "..\DesktopModules\flowmarks_Events\flowmarks_Events_Install"
+set resources= "..\DesktopModules\flowmarks_Events\flowmarks_Events_Install\resources"
 
 MKDIR %package%
 MKDIR %resources%
@@ -41,7 +41,7 @@ XCOPY /Y %project%\flowmarks_Events.xml %package%
 REM Copy Txt
 XCOPY /Y %project%\*.txt %package%
 
-REM Copy HTML
+REM Copy Htm
 XCOPY /Y %project%\*.htm %package%
 
 REM Copy SqlDataProvider files

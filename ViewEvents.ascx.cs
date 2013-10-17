@@ -264,6 +264,16 @@ namespace flowmarks.Modules.Events
 
         #region Event Handlers
 
+        /// <summary>
+        /// Register jQuery
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void Page_Init(System.Object sender, System.EventArgs e)
+        {
+            DotNetNuke.Framework.jQuery.RequestRegistration();
+            DotNetNuke.Framework.jQuery.RequestUIRegistration();
+        }
 
         /// <summary>
         /// Sets up the stage and binds event entries to the listview
