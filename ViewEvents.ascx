@@ -54,14 +54,16 @@
             dateFormat: '<% =DateFormat.ToLower().Replace("yyyy", "yy") %>',
             timeFormat: '<% =TimeFormat %>',
             minuteGrid: 15,
-            stepMinute: 15
+            stepMinute: 15,
+            firstDay: 1
         });
 
         $(".dateEventDate2").datetimepicker({
             dateFormat: '<% =DateFormat.ToLower().Replace("yyyy", "yy") %>',
             timeFormat: '<% =TimeFormat %>',
             minuteGrid: 15,
-            stepMinute: 15
+            stepMinute: 15,
+            firstDay: 1
         });
 
         $(".edit").hide().fadeIn();
