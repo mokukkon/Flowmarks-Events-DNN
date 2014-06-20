@@ -471,6 +471,7 @@ namespace flowmarks.Modules.Events
             CloseInsert();
             lstContent.EditIndex = e.NewEditIndex;
             LoadEventEntries();
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "hash", " $('html, body').animate({scrollTop: ($('#current-edit').offset().top - 15) + 'px'}, 'fast');", true);
         }
 
         /// <summary>
@@ -563,6 +564,7 @@ namespace flowmarks.Modules.Events
             CloseEdit();
             lstContent.InsertItemPosition = InsertItemPosition.FirstItem;
             LoadEventEntries();
+            Page.ClientScript.RegisterStartupScript(this.GetType(), "hash", " $('html, body').animate({scrollTop: ($('#add-header').offset().top - 15) + 'px'}, 'fast');", true);
         }
 
         /// <summary>

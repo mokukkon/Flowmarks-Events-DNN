@@ -143,6 +143,10 @@
     <None Include="01.00.02.SqlDataProvider" />
     <None Include="flowmarks_Events.dnn" />
     <None Include="flowmarks_Events.dnn5" />
+    <Content Include="module.css">
+      <DependentUpon>module.less</DependentUpon>
+    </Content>
+    <Content Include="module.less" />
     <None Include="Uninstall.SqlDataProvider" />
   </ItemGroup>
   <ItemGroup>
@@ -172,7 +176,6 @@
     <Content Include="images\ui-icons_cd0a0a_256x240.png" />
     <Content Include="images\ui-icons_d8e7f3_256x240.png" />
     <Content Include="images\ui-icons_f9bd01_256x240.png" />
-    <Content Include="module.css" />
     <Content Include="UserSettings.ascx" />
   </ItemGroup>
   <ItemGroup>
