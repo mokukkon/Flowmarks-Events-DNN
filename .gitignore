@@ -1,2 +1,5 @@
 *.suo
 *.user
+flowmarks_Events_Install/
+obj/
+Build/*.dll
